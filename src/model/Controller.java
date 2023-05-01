@@ -1,6 +1,5 @@
 package model;
 
-import model.BibliographicProduct;
 import Factories.UserFactory;
 import java.util.HashMap;
 
@@ -15,13 +14,28 @@ public class Controller {
         return users;
     }
 
-    public String createUser(String name, String ID, int typeOfUser) {
-        UserFactory userFactory = new UserFactory();
-        addUser(userFactory.createUser(ID, name, typeOfUser));
-        return "User created";
+    public boolean areThereUsers() {
+        return !users.isEmpty();
     }
 
-    public void addUser(AbstractUser user) {
-        users.put(user.getID(), user);
+    public AbstractUser createUser(String name, String ID, int typeOfUser) {
+        UserFactory userFactory = new UserFactory();
+        AbstractUser user = userFactory.createUser(ID, name, typeOfUser);
+        return user;
     }
+
+    public boolean addUser(String name, String ID, int typeOfUser) {
+        boolean wasAdded = false;
+        AbstractUser user = createUser(name, ID, typeOfUser);
+        users.put(user.getID(), user);
+        if (users.containsKey(user.getID())) {
+            wasAdded = true;
+        }
+        return wasAdded;
+    }
+
+    public String showUserInfo(String ID) {
+        return users.get(ID).toString();
+    }
+
 }

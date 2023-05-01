@@ -1,5 +1,8 @@
 package ui;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Scanner;
 import model.Controller;
 
@@ -16,12 +19,12 @@ public class Main {
     public Main() {
         input = new Scanner(System.in);
         driver = new Controller();
+        initProgram.initModel(driver); // This should be commented if you want to test the first requieremtn.
     }
 
     public static void main(String[] args) {
         Main view = new Main();
         int option = view.menu();
-
         while (option != 9) {
             view.executeOption(option);
             option = view.menu();
@@ -41,11 +44,14 @@ public class Main {
         switch (option) {
 
             case 1:
-
+                registerUser();
                 break;
-
             case 2:
-
+                if (driver.areThereUsers()) {
+                    registerBibliographicProduct();
+                } else {
+                    System.out.println("It wasn't possible to find any users in the data base.");
+                }
                 break;
 
             case 3:
@@ -90,7 +96,7 @@ public class Main {
                             "<< -                                Welcome                            - >>\n" +
                             "<< --------------------------------------------------------------------- >>\n" +
                             "1. Register user \n" +
-                            "2. \n" +
+                            "2. Buy a book or subscribe to a magazine\n" +
                             "3. \n" +
                             "4. \n" +
                             "5. \n" +
@@ -157,11 +163,68 @@ public class Main {
         int typeOfUser;
         System.out.println("Please insert the user's ID: ");
         ID = input.nextLine();
-        System.out.println("Please insert the user's ID: ");
+        System.out.println("Please insert the users's name:  ");
         name = input.nextLine();
         System.out.println("What type is the user?" + "\n" + "1. Standar" + "\n" + "2. Premium");
-        typeOfUser = input.nextInt();
-        driver.createUser(name, ID, typeOfUser);
+        typeOfUser = validateIntegerInput();
+
+        if (driver.addUser(name, ID, typeOfUser)) {
+            System.out.println("The user was added succesfully");
+            System.out.println("\tUser's information: " + "\n" + driver.showUserInfo(ID));
+        } else {
+            System.out.println("There was an error adding the user!");
+        }
     }
 
+    public void registerBibliographicProduct() {
+        int bookOrMagazine;
+        String usersID;
+        String productID; // Maybe i decide to change this later so it auto generated.
+        String productName;
+        int numberOfPages;
+        Calendar publicationDate;
+        String URL;
+        double value;
+        String review;
+        String frecuencyOfIssuance;
+
+        System.out.println("\n\tWould you like to: " +
+                "\n1.Buy a book" +
+                "\n2.Subscribe to a magazine");
+        bookOrMagazine = validateIntegerInput();
+
+        System.out.println("Please insert the user's ID: ");
+        usersID = input.nextLine();
+
+        System.out.println("Please insert the product's ID: ");
+        productID = input.nextLine();
+
+        System.out.println("Please insert the product's name: ");
+        productName = input.nextLine();
+
+        System.out.println("Please insert the number of pages: ");
+        numberOfPages = validateIntegerInput();
+        while (true) {
+            try {
+                System.out.println("Please insert the publication date (dd/MM/yyyy):");
+                publicationDate = stringToCalendar(input.nextLine());
+                break;
+            } catch (ParseException e) {
+                System.out.println("\tERROR please inserte the right format (dd/MM/yyyy)");
+            }
+        }
+
+        System.out.println("Please insert the URL: ");
+        URL = input.nextLine();
+
+        System.out.println("Please insert the value: ");
+        value = validateDoubleInput();
+    }
+
+    private Calendar stringToCalendar(String dateString) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dateFormat.parse(dateString));
+        return calendar;
+    }
 }
