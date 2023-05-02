@@ -6,12 +6,10 @@ public class initProgram {
     public static void initModel(Controller driver) {
         for (int i = 0; i < 5; i++) {
             driver.addUser(("A0" + i), ("user#" + i), 1);
-            for (int j = i; i < 5; i++) {
-                driver.addUser(("A0" + j), ("user#" + j), 2);
-            }
-            ;
         }
-        ;
+        for (int j = 5; j < 10; j++) {
+            driver.addUser(("A0" + j), ("user#" + j), 2);
+        }
 
     }
 }

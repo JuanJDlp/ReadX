@@ -3,6 +3,7 @@ package Tests.modelTests;
 import model.*;
 
 import org.junit.jupiter.api.Test;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -21,7 +22,7 @@ class controllerTest {
         String ID = "JD123";
         int typeOfUser = 1;
         // Act
-        controller.createUser(name, ID, typeOfUser);
+        controller.addUser(name, ID, typeOfUser);
 
         // Assert
         Assertions.assertTrue(controller.getUsers().containsKey(ID));
@@ -51,4 +52,17 @@ class controllerTest {
 
         Assertions.assertTrue(user instanceof Premium);
     }
+
+    @Test
+    void validateHashMapHoldsAlotOfUsers() {
+
+        for (int i = 0; i < 100; i++) {
+            controller.addUser(("A0" + i), ("user#" + i), 1);
+        }
+        for (int j = 100; j < 200; j++) {
+            controller.addUser(("A0" + j), ("user#" + j), 2);
+        }
+        Assertions.assertTrue(controller.getUsers().size() == 200);
+    }
+
 }

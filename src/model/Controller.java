@@ -1,16 +1,16 @@
 package model;
 
 import Factories.UserFactory;
-import java.util.HashMap;
+import MyHashMap.MyHashMap;
 
 public class Controller {
-    private HashMap<String, AbstractUser> users;
+    private MyHashMap<String, AbstractUser> users;
 
     public Controller() {
-        users = new HashMap<>();
+        users = new MyHashMap<>();
     }
 
-    public HashMap<String, AbstractUser> getUsers() {
+    public MyHashMap<String, AbstractUser> getUsers() {
         return users;
     }
 
