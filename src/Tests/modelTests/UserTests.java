@@ -22,7 +22,7 @@ class controllerTest {
         String ID = "JD123";
         int typeOfUser = 1;
         // Act
-        controller.addUser(name, ID, typeOfUser);
+        controller.addUser(controller.createUser(name, ID, typeOfUser));
 
         // Assert
         Assertions.assertTrue(controller.getUsers().containsKey(ID));
@@ -56,13 +56,13 @@ class controllerTest {
     @Test
     void validateHashMapHoldsAlotOfUsers() {
 
-        for (int i = 0; i < 100; i++) {
-            controller.addUser(("A0" + i), ("user#" + i), 1);
+        for (int i = 0; i < 500; i++) {
+            controller.addUser(controller.createUser(("A0" + i), ("user#" + i), 1));
         }
-        for (int j = 100; j < 200; j++) {
-            controller.addUser(("A0" + j), ("user#" + j), 2);
+        for (int j = 500; j < 1000; j++) {
+            controller.addUser(controller.createUser(("A0" + j), ("user#" + j), 2));
         }
-        Assertions.assertTrue(controller.getUsers().size() == 200);
+        Assertions.assertTrue(controller.getUsers().size() == 1000);
     }
 
 }
