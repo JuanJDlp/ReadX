@@ -212,6 +212,8 @@ public class Main {
             default:
                 System.out.println("Option not available");
         }
+        System.out.println(driver.showProductInfo(productName));
+
     }
 
     private void createBook(String productName, int numberOfPages,

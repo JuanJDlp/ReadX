@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 
-class controllerTest {
+class UserTests {
     private Controller controller;
 
     @BeforeEach

@@ -11,6 +11,7 @@ public class Controller {
 
     public Controller() {
         users = new MyHashMap<>();
+        products = new MyHashMap<>();
     }
 
     public MyHashMap<String, AbstractUser> getUsers() {
@@ -82,7 +83,7 @@ public class Controller {
 
     }
 
-    public String showProductInfo(String ID) {
-        return "a";
+    public String showProductInfo(String name) {
+        return products.get(name).toString();
     }
 }

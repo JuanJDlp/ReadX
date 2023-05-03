@@ -1,6 +1,8 @@
 package model;
 
+import java.nio.charset.Charset;
 import java.util.Calendar;
+import java.util.Random;
 
 public class Magazine extends BibliographicProduct {
     private String frecuencyOfIssuance;
@@ -22,6 +24,7 @@ public class Magazine extends BibliographicProduct {
             Category category) {
 
         super(name, numberOfPages, publicationDate, URL, value);
+        super.ID = createAlhpaNumeric();
         this.frecuencyOfIssuance = frecuencyOfIssuance;
         this.category = category;
     }
@@ -40,6 +43,12 @@ public class Magazine extends BibliographicProduct {
 
     public void setFrecuencyOfIssuance(String frecuencyOfIssuance) {
         this.frecuencyOfIssuance = frecuencyOfIssuance;
+    }
+
+    public String createAlhpaNumeric() {
+        byte[] array = new byte[7]; // length is bounded by 7
+        new Random().nextBytes(array);
+        return new String(array, Charset.forName("UTF-8"));
     }
 
     public String toString() {

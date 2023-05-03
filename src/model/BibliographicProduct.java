@@ -4,14 +4,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public abstract class BibliographicProduct {
-    String ID;
-    String name;
-    int numberOfPages;
-    Calendar publicationDate;
-    String URL;
-    double value;
-    int copiesSold;
-    int numberOfPagesRead;
+    protected String ID;
+    protected String name;
+    protected int numberOfPages;
+    protected Calendar publicationDate;
+    protected String URL;
+    protected double value;
+    protected int copiesSold;
+    protected int numberOfPagesRead;
     private SimpleDateFormat sdf;
 
     public BibliographicProduct(

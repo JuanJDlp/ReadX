@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Calendar;
+import java.util.Random;
 
 public class Book extends BibliographicProduct {
     private String shortReview;
@@ -22,6 +23,7 @@ public class Book extends BibliographicProduct {
             Genre genre) {
 
         super(name, numberOfPages, publicationDate, URL, value);
+        super.ID = hexGenerator();
         this.shortReview = shortReview;
         this.genre = genre;
 
@@ -41,6 +43,12 @@ public class Book extends BibliographicProduct {
 
     public void setShortReview(String shortReview) {
         this.shortReview = shortReview;
+    }
+
+    private String hexGenerator() {
+        Random rand = new Random();
+        int myRandomNumber = rand.nextInt(0x1000);
+        return Integer.toHexString(myRandomNumber).substring(0, 3);
     }
 
     public String toString() {
