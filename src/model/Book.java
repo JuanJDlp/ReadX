@@ -46,9 +46,17 @@ public class Book extends BibliographicProduct {
     }
 
     private String hexGenerator() {
-        Random rand = new Random();
-        int myRandomNumber = rand.nextInt(0x1000);
-        return Integer.toHexString(myRandomNumber).substring(0, 3);
+        Random random = new Random();
+        StringBuilder idBuilder = new StringBuilder();
+        for (int i = 0; i < 3; i++) {
+            int randomNumber = random.nextInt(600);
+            String hex = Integer.toHexString(randomNumber);
+            if (hex.length() < 2) {
+                hex = "0" + hex;
+            }
+            idBuilder.append(hex);
+        }
+        return idBuilder.toString().toUpperCase();
     }
 
     public String toString() {

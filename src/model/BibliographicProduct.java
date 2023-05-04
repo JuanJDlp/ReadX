@@ -39,6 +39,10 @@ public abstract class BibliographicProduct {
         return ID;
     }
 
+    public void setID(String iD) {
+        ID = iD;
+    }
+
     public String toString() {
         return "ID:" + ID + "\nName: " + name + "\nNumber of pages: " + numberOfPages + "\nPublication date:"
                 + sdf.format(publicationDate.getTime()) + "\nURL:" + URL + "\nValue:" + value +

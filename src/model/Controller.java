@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import Factories.*;
@@ -7,15 +8,19 @@ import MyHashMap.MyHashMap;
 
 public class Controller {
     private MyHashMap<String, AbstractUser> users;
-    private MyHashMap<String, BibliographicProduct> products;
+    private ArrayList<BibliographicProduct> products;
 
     public Controller() {
         users = new MyHashMap<>();
-        products = new MyHashMap<>();
+        products = new ArrayList<>();
     }
 
     public MyHashMap<String, AbstractUser> getUsers() {
         return users;
+    }
+
+    public ArrayList<BibliographicProduct> getProducts() {
+        return products;
     }
 
     public boolean areThereUsers() {
@@ -73,17 +78,41 @@ public class Controller {
 
     }
 
-    public boolean addProduct(BibliographicProduct product) {
-        boolean wasAdded = false;
-        products.put(product.getName(), product);
-        if (products.containsKey(product.getID())) {
-            wasAdded = true;
-        }
-        return wasAdded;
-
+    public String addProduct(BibliographicProduct product) {
+        products.add(product);
+        return product.getID();
     }
 
-    public String showProductInfo(String name) {
-        return products.get(name).toString();
+    public String showProductInfoById(String ID) {
+        String info = "This item does not exist";
+        boolean found = false;
+        for (int i = 0; i < products.size() && !found; i++)
+            if (products.get(i).getID().equals(ID)) {
+                found = true;
+                info = products.get(i).toString();
+            }
+        return info;
+    }
+
+    public String showProductInfoByName(String name) {
+        String info = "This item does not exist";
+        boolean found = false;
+        for (int i = 0; i < products.size() && !found; i++)
+            if (products.get(i).getName().equals(name)) {
+                found = true;
+                info = products.get(i).toString();
+            }
+        return info;
+    }
+
+    public void deleteProduct(String ID) {
+        boolean found = false;
+        int position = -1;
+        for (int i = 0; i < products.size() && !found; i++)
+            if (products.get(i).getID().equals(ID)) {
+                found = true;
+                position = i;
+            }
+        products.remove(position);
     }
 }

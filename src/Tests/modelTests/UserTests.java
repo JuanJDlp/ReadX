@@ -16,6 +16,19 @@ class UserTests {
     }
 
     @Test
+    void validateWhenCreatingAnUserItsNotTNull() {
+        // Arrange
+        String name = "John Doe";
+        String ID = "JD123";
+        int typeOfUser = 1;
+        // Act
+        AbstractUser user = controller.createUser(name, ID, typeOfUser);
+
+        // Assert
+        Assertions.assertNotNull(user);
+    }
+
+    @Test
     void validateUserWasAdded() {
         // Arrange
         String name = "John Doe";

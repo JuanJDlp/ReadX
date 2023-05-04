@@ -181,7 +181,6 @@ public class Main {
         String productName;
         int numberOfPages;
         Calendar publicationDate;
-
         System.out.println("\n\tWould you like to: " +
                 "\n1.Buy a book" +
                 "\n2.Subscribe to a magazine");
@@ -212,11 +211,12 @@ public class Main {
             default:
                 System.out.println("Option not available");
         }
-        System.out.println(driver.showProductInfo(productName));
+
+        System.out.println(driver.showProductInfoByName(productName));
 
     }
 
-    private void createBook(String productName, int numberOfPages,
+    private String createBook(String productName, int numberOfPages,
             Calendar publicationDate,
             int bookOrMagazine) {
         String URL;
@@ -237,11 +237,12 @@ public class Main {
                 "Please select the genre of the book: " + "\n" + "1.Science fiction" + "\n" + "2.Fantasy" + "\n"
                         + "3.Historical novel");
         genre = validateIntegerInput();
-        driver.addProduct(driver.createBibliographicProduct(productName, numberOfPages, publicationDate, URL, value,
-                review, genre, bookOrMagazine));
+        return driver
+                .addProduct(driver.createBibliographicProduct(productName, numberOfPages, publicationDate, URL, value,
+                        review, genre, bookOrMagazine));
     }
 
-    private void craeteMagazine(String productName, int numberOfPages,
+    private String craeteMagazine(String productName, int numberOfPages,
             Calendar publicationDate,
             int bookOrMagazine) {
         String URL;
@@ -262,8 +263,9 @@ public class Main {
                 "Please select the category of the magazine: " + "\n" + "1.Varieties" + "\n" + "2.Design" + "\n"
                         + "3.Scientific");
         category = validateIntegerInput();
-        driver.addProduct(driver.createBibliographicProduct(productName, numberOfPages, publicationDate, URL, value,
-                frecuencyOfIssuance, category, bookOrMagazine));
+        return driver
+                .addProduct(driver.createBibliographicProduct(productName, numberOfPages, publicationDate, URL, value,
+                        frecuencyOfIssuance, category, bookOrMagazine));
     }
 
     private Calendar stringToCalendar(String dateString) throws ParseException {
