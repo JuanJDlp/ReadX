@@ -85,12 +85,9 @@ public class Controller {
 
     public String showProductInfoById(String ID) {
         String info = "This item does not exist";
-        boolean found = false;
-        for (int i = 0; i < products.size() && !found; i++)
-            if (products.get(i).getID().equals(ID)) {
-                found = true;
-                info = products.get(i).toString();
-            }
+        if (findProductByID(ID) != -1) {
+            info = products.get(findProductByID(ID)).toString();
+        }
         return info;
     }
 
@@ -105,7 +102,25 @@ public class Controller {
         return info;
     }
 
-    public void deleteProduct(String ID) {
+    public String showProductsWithSimilarName(String productsName) {
+        String info = "";
+        for (int i = 0; i < products.size(); i++)
+            if (products.get(i).getName().toLowerCase().contains(productsName.toLowerCase())) {
+                info += products.get(i).getName() + " | " + products.get(i).getID() + "\n";
+            }
+        return info;
+    }
+
+    public String deleteProduct(String ID) {
+        String msg = "We could not find this product";
+        if (findProductByID(ID) != -1) {
+            products.remove(findProductByID(ID));
+            msg = "Product deleted";
+        }
+        return msg;
+    }
+
+    private int findProductByID(String ID) {
         boolean found = false;
         int position = -1;
         for (int i = 0; i < products.size() && !found; i++)
@@ -113,6 +128,6 @@ public class Controller {
                 found = true;
                 position = i;
             }
-        products.remove(position);
+        return position;
     }
 }

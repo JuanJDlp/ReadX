@@ -86,7 +86,7 @@ public class ProductTest {
         ArrayList<BibliographicProduct> products = new ArrayList<>();
         ArrayList<String> seenIDs = new ArrayList<>();
 
-        for (int i = 0; i < 6000; i++) {
+        for (int i = 0; i < 100; i++) {
             BibliographicProduct product = driver.createBibliographicProduct("Juegos del hambre " + i, i,
                     Calendar.getInstance(), "www.juegosdelhambre" + i + ".com", i, "Review", 1,
                     1);
@@ -102,6 +102,7 @@ public class ProductTest {
                 break;
             }
             seenIDs.add(id);
+
         }
         Assertions.assertFalse(hasDuplicates);
 

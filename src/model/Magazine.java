@@ -1,6 +1,5 @@
 package model;
 
-import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.Random;
 
@@ -46,9 +45,15 @@ public class Magazine extends BibliographicProduct {
     }
 
     public String createAlhpaNumeric() {
-        byte[] array = new byte[3]; // length is bounded by 7
-        new Random().nextBytes(array);
-        return new String(array, Charset.forName("UTF-8"));
+        Random random = new Random();
+        String characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        StringBuilder idBuilder = new StringBuilder();
+        for (int i = 0; i < 3; i++) {
+            int randomIndex = random.nextInt(characters.length());
+            char randomChar = characters.charAt(randomIndex);
+            idBuilder.append(randomChar);
+        }
+        return idBuilder.toString();
     }
 
     public String toString() {

@@ -55,6 +55,11 @@ public class Main {
                 break;
 
             case 3:
+                if (driver.areThereUsers()) {
+                    deleteProduct();
+                } else {
+                    System.out.println("It wasn't possible to find any users in the data base.");
+                }
                 break;
 
             case 4:
@@ -96,8 +101,8 @@ public class Main {
                             "<< -                                Welcome                            - >>\n" +
                             "<< --------------------------------------------------------------------- >>\n" +
                             "1. Register user \n" +
-                            "2. Buy a book or subscribe to a magazine\n" +
-                            "3. \n" +
+                            "2. Add a book or a magazine\n" +
+                            "3. Delete book or magazine \n" +
                             "4. \n" +
                             "5. \n" +
                             "6. \n" +
@@ -266,6 +271,18 @@ public class Main {
         return driver
                 .addProduct(driver.createBibliographicProduct(productName, numberOfPages, publicationDate, URL, value,
                         frecuencyOfIssuance, category, bookOrMagazine));
+    }
+
+    public void deleteProduct() {
+        String productsName;
+        String productID;
+        System.out.println("Please insert the Product name");
+        productsName = input.nextLine();
+        System.out.println(
+                "\n\tThese are product with similar names: " + driver.showProductsWithSimilarName(productsName));
+        System.out.println("\nPlease insert the ID of the product you want to delete.");
+        productID = input.nextLine();
+        System.out.println(driver.deleteProduct(productID));
     }
 
     private Calendar stringToCalendar(String dateString) throws ParseException {
