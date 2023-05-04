@@ -120,7 +120,7 @@ public class Controller {
         return msg;
     }
 
-    private int findProductByID(String ID) {
+    public int findProductByID(String ID) {
         boolean found = false;
         int position = -1;
         for (int i = 0; i < products.size() && !found; i++)

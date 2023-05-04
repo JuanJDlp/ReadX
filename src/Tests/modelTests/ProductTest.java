@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 public class ProductTest {
     private Controller controller;
 
+    // ADDING PART
     @BeforeEach
     void setUp() {
         controller = new Controller();
@@ -105,6 +106,70 @@ public class ProductTest {
 
         }
         Assertions.assertFalse(hasDuplicates);
+    }
 
+    // DELETING PART
+
+    @Test
+    public void testDeleteBookProduct() {
+        Controller driver = new Controller();
+        BibliographicProduct book = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
+                Book.Genre.FANTASY);
+        book.setID("1");
+        driver.addProduct(book);
+        String result = driver.deleteProduct("1");
+        Assertions.assertEquals("Product deleted", result);
+        Assertions.assertEquals(-1, driver.findProductByID("1"));
+    }
+
+    @Test
+    public void testDeleteMagazineProduct() {
+        Controller driver = new Controller();
+        BibliographicProduct magazine = new Magazine("News on java", 1, Calendar.getInstance(), "https", 9, "Mensually",
+                Magazine.Category.DESIGN);
+        magazine.setID("2");
+        driver.addProduct(magazine);
+        String result = driver.deleteProduct("2");
+        Assertions.assertEquals("Product deleted", result);
+        Assertions.assertEquals(-1, driver.findProductByID("2"));
+    }
+
+    @Test
+    public void testDeleteNonExistingProduct() {
+        Controller driver = new Controller();
+        String result = driver.deleteProduct("3");
+        Assertions.assertEquals("We could not find this product", result);
+    }
+
+    @Test
+    public void testDeleteProductNotAdded() {
+        Controller driver = new Controller();
+        BibliographicProduct book = new Magazine("News on java", 1, Calendar.getInstance(), "https", 9, "Mensually",
+                Magazine.Category.DESIGN);
+        driver.addProduct(book);
+        String result = driver.deleteProduct("2");
+        Assertions.assertEquals("We could not find this product", result);
+        Assertions.assertEquals(1, driver.getProducts().size());
+    }
+
+    @Test
+    public void testDeleteMultipleProductsWithSameName() {
+        Controller driver = new Controller();
+
+        BibliographicProduct book1 = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
+                Book.Genre.FANTASY);
+        BibliographicProduct magazine1 = new Magazine("News on java", 1, Calendar.getInstance(), "https", 9,
+                "Mensually",
+                Magazine.Category.DESIGN);
+
+        magazine1.setID("1");
+        book1.setID("1");
+
+        driver.addProduct(book1);
+        driver.addProduct(magazine1);
+        driver.deleteProduct("1");
+
+        Assertions.assertEquals(-1, driver.findProductByID("1"));
+        Assertions.assertEquals(0, driver.getProducts().size());
     }
 }
