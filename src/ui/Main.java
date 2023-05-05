@@ -63,9 +63,12 @@ public class Main {
                 break;
 
             case 4:
-
+                if (driver.areThereUsers()) {
+                    changeProduct();
+                } else {
+                    System.out.println("It wasn't possible to find any users in the data base.");
+                }
                 break;
-
             case 5:
 
                 break;
@@ -103,7 +106,7 @@ public class Main {
                             "1. Register user \n" +
                             "2. Add a book or a magazine\n" +
                             "3. Delete book or magazine \n" +
-                            "4. \n" +
+                            "4. Change a book or a magazine\n" +
                             "5. \n" +
                             "6. \n" +
                             "7. \n" +
@@ -279,10 +282,38 @@ public class Main {
         System.out.println("Please insert the Product name");
         productsName = input.nextLine();
         System.out.println(
-                "\n\tThese are product with similar names: " + driver.showProductsWithSimilarName(productsName));
+                "\n\tThese are product with similar names: \n" + driver.showProductsWithSimilarName(productsName));
         System.out.println("\nPlease insert the ID of the product you want to delete.");
         productID = input.nextLine();
         System.out.println(driver.deleteProduct(productID));
+    }
+
+    public void changeProduct() {
+        String productsName;
+        String productID;
+        int option;
+        String newValue = "00/00/0000";
+        String msg = "";
+
+        System.out.println("Please insert the product name");
+        productsName = input.nextLine();
+
+        System.out.println(
+                "\n\tThese are product with similar names: \n" + driver.showProductsWithSimilarName(productsName));
+
+        System.out.println("\nPlease insert the ID of the product you want to modify: ");
+        productID = input.nextLine();
+
+        System.out.println("\nWhat would you look to change:  " + driver.showProductLabeledAttributes(productID));
+        option = validateIntegerInput();
+
+        System.out.println(driver.displayInformationByProduct(productID, option));
+
+        System.out.println("What would you like to change it to: \n>>");
+        newValue = input.nextLine();
+
+        msg = driver.changeProduct(productID, option, newValue);
+        System.out.println(msg);
     }
 
     private Calendar stringToCalendar(String dateString) throws ParseException {

@@ -1,6 +1,7 @@
 package Tests.modelTests;
 
 import model.*;
+import model.Book.Genre;
 
 import org.junit.jupiter.api.Test;
 
@@ -153,7 +154,7 @@ public class ProductTest {
     }
 
     @Test
-    public void testDeleteMultipleProductsWithSameName() {
+    public void testWhenHavingMultipleProductWithTheSameIDOnlyDeleteTheFirstOneYouFind() {
         Controller driver = new Controller();
 
         BibliographicProduct book1 = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
@@ -169,7 +170,120 @@ public class ProductTest {
         driver.addProduct(magazine1);
         driver.deleteProduct("1");
 
-        Assertions.assertEquals(-1, driver.findProductByID("1"));
-        Assertions.assertEquals(0, driver.getProducts().size());
+        Assertions.assertEquals(0, driver.findProductByID("1"));
+        Assertions.assertEquals(1, driver.getProducts().size());
     }
+
+    @Test
+    public void testChangeProductName() {
+        // Arrange
+        Controller library = new Controller();
+        Book book = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
+                Book.Genre.FANTASY);
+
+        library.addProduct(book);
+
+        // Act
+        String result = library.changeProduct(book.getID(), 1, "New Book Name");
+
+        // Assert
+        Assertions.assertEquals("Product name changed", result);
+        Assertions.assertEquals("New Book Name", book.getName());
+    }
+
+    @Test
+    public void testChangeProductNumberOfPages() {
+        // Arrange
+        Controller library = new Controller();
+        Magazine magazine = new Magazine("News on java", 1, Calendar.getInstance(), "https", 9,
+                "Mensually",
+                Magazine.Category.DESIGN);
+        library.addProduct(magazine);
+
+        // Act
+        String result = library.changeProduct(magazine.getID(), 2, "100");
+
+        // Assert
+        Assertions.assertEquals("Product number of pages changed", result);
+        Assertions.assertEquals(100, magazine.getNumberOfPages());
+    }
+
+    @Test
+    public void testChangeProductPublicationDate() {
+        // Arrange
+        Controller controller = new Controller();
+        Book book = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
+                Book.Genre.FANTASY);
+        controller.addProduct(book);
+
+        // Act
+        String result = controller.changeProduct(book.getID(), 3, "05/05/2023");
+
+        // Assert
+        Assertions.assertEquals("Product publication date changed", result);
+        Assertions.assertEquals("05/05/2023", book.getPublicationDateString());
+    }
+
+    @Test
+    public void testChangeProductURL() {
+        // Create a test product
+        Book book = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
+                Book.Genre.FANTASY);
+        controller.addProduct(book);
+
+        // Change the URL of the product
+        String result = controller.changeProduct(book.getID(), 4, "https://www.test.com/new-url");
+
+        // Assert that the URL was changed successfully
+        Assertions.assertEquals("Product URL changed", result);
+        Assertions.assertEquals("https://www.test.com/new-url", book.getURL());
+    }
+
+    @Test
+    public void testChangeProductValue() {
+        // Create a test product
+        Magazine magazine = new Magazine("News on java", 1, Calendar.getInstance(), "https", 9,
+                "Mensually",
+                Magazine.Category.DESIGN);
+        controller.addProduct(magazine);
+
+        // Change the value of the product
+        String result = controller.changeProduct(magazine.getID(), 5, "12.99");
+
+        // Assert that the value was changed successfully
+        Assertions.assertEquals("Product value changed", result);
+        Assertions.assertEquals(12.99, magazine.getValue(), 0.001);
+    }
+
+    @Test
+    public void testChangeBookGenre() {
+        // Create a test book
+        Book book = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
+                Book.Genre.SCIENCE_FICTION);
+        controller.addProduct(book);
+
+        // Change the genre of the book
+        String result = controller.changeProduct(book.getID(), 7, "2");
+
+        // Assert that the genre was changed successfully
+        Assertions.assertEquals("Product genre changed", result);
+        Assertions.assertEquals(Genre.FANTASY, book.getGenre());
+    }
+
+    @Test
+    public void testChangeMagazineCategory() {
+        // Create a test magazine
+        Magazine magazine = new Magazine("News on java", 1, Calendar.getInstance(), "https", 9,
+                "Mensually",
+                Magazine.Category.DESIGN);
+        controller.addProduct(magazine);
+
+        // Change the category of the magazine
+        String result = controller.changeProduct(magazine.getID(), 7, "3");
+
+        // Assert that the category was changed successfully
+        Assertions.assertEquals("Product category changed", result);
+        Assertions.assertEquals(Magazine.Category.SCIENTIFIC, magazine.getCategory());
+    }
+
 }

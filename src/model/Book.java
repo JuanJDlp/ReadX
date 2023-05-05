@@ -55,9 +55,15 @@ public class Book extends BibliographicProduct {
         return hexId;
     }
 
+    public String labbeldAttributes() {
+        return super.labbeldAttributes() + "\n" +
+                "6.Short Review: '" + shortReview + "'" +
+                "\n7.Genre: " + genre;
+    }
+
     public String toString() {
         return super.toString() + "\n" +
-                "Short Review: '" + shortReview +
+                "Short Review: '" + shortReview + "'" +
                 "\nGenre: " + genre;
     }
 

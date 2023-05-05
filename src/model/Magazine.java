@@ -56,10 +56,16 @@ public class Magazine extends BibliographicProduct {
         return idBuilder.toString();
     }
 
+    public String labbeldAttributes() {
+        return super.labbeldAttributes() +
+                "\n6.Frecuency of issuance: " + frecuencyOfIssuance +
+                "\n7.Category: " + category;
+    }
+
     public String toString() {
         return super.toString() + "\n" +
                 "Frecuency of issuance: " + frecuencyOfIssuance +
-                "\nCCategory: " + category;
+                "\nCategory: " + category;
 
     }
 }
