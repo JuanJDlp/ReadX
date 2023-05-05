@@ -41,8 +41,8 @@ public class Controller {
 
     public boolean addUser(AbstractUser user) {
         boolean wasAdded = false;
-        users.put(user.getID(), user);
-        if (users.containsKey(user.getID())) {
+        if (!users.containsKey(user.getID())) {
+            users.put(user.getID(), user);
             wasAdded = true;
         }
         return wasAdded;

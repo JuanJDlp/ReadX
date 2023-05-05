@@ -67,15 +67,16 @@ class UserTests {
     }
 
     @Test
-    void validateHashMapHoldsAlotOfUsers() {
+    void validateItsNotPossibleToCreateUserWithSameID() {
+        // Arrange
+        String name = "John Doe";
+        String ID = "JD123";
+        int typeOfUser = 1;
+        // Act
+        controller.addUser(controller.createUser(name, ID, typeOfUser));
 
-        for (int i = 0; i < 500; i++) {
-            controller.addUser(controller.createUser(("A0" + i), ("user#" + i), 1));
-        }
-        for (int j = 500; j < 1000; j++) {
-            controller.addUser(controller.createUser(("A0" + j), ("user#" + j), 2));
-        }
-        Assertions.assertTrue(controller.getUsers().size() == 1000);
+        // Assert
+        Assertions.assertFalse(controller.addUser(controller.createUser(name, ID, typeOfUser)));
+
     }
-
 }

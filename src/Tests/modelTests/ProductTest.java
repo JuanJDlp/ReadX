@@ -174,6 +174,7 @@ public class ProductTest {
         Assertions.assertEquals(1, driver.getProducts().size());
     }
 
+    // TEST CHANGES
     @Test
     public void testChangeProductName() {
         // Arrange
