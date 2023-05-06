@@ -182,9 +182,9 @@ public class Controller {
         BibliographicProduct product = getProductByID(ID);
         if (option == 6) {
             if (product instanceof Book) {
-
+                info = "What would you like to change the review for: ";
             } else if (product instanceof Magazine) {
-
+                info = "What would you like to change the frecuency of issuance for: ";
             }
         } else if (option == 7) {
             info = displayEnumAtributesBasedOnType(product);
@@ -221,8 +221,13 @@ public class Controller {
                     msg = "Product name changed";
                     break;
                 case 2:
-                    product.setNumberOfPages(Integer.parseInt(newValue));
-                    msg = "Product number of pages changed";
+                    try {
+                        product.setNumberOfPages(Integer.parseInt(newValue));
+                        msg = "Product number of pages changed";
+                    } catch (NumberFormatException e) {
+                        msg = "It must be a numeric type";
+                    }
+
                     break;
                 case 3:
                     try {
@@ -237,8 +242,14 @@ public class Controller {
                     msg = "Product URL changed";
                     break;
                 case 5:
-                    product.setValue(Double.parseDouble(newValue));
-                    msg = "Product value changed";
+                    try {
+
+                        product.setValue(Double.parseDouble(newValue));
+                        msg = "Product value changed";
+                    } catch (NumberFormatException e) {
+                        msg = "It must be a numeric type";
+
+                    }
                     break;
                 case 6:
                     if (product instanceof Book) {
@@ -275,4 +286,26 @@ public class Controller {
         return calendar;
     }
 
+    public String addProductToUser(String userID, String productID) {
+        String msg = "Either the user or the product ID was not found";
+        BibliographicProduct product = getProductByID(productID);
+        AbstractUser user = users.get(userID);
+
+        if (product != null && user != null) {
+            if (!user.getProducts().containsKey(productID)) {
+                product.setCopiesSold(product.getCopiesSold() + 1);
+                user.addProduct(product);
+
+                if (product instanceof Book) {
+                    msg = "Product added to user " + user.getName();
+                } else if (product instanceof Magazine) {
+                    msg = "User " + user.getName() + " was subscribed to the magazine!";
+                }
+            } else {
+                msg = "This user alredy has this prodcut";
+            }
+
+        }
+        return msg;
+    }
 }

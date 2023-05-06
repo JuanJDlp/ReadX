@@ -70,7 +70,11 @@ public class Main {
                 }
                 break;
             case 5:
-
+                if (driver.areThereUsers()) {
+                    obtainProduct();
+                } else {
+                    System.out.println("It wasn't possible to find any users in the data base.");
+                }
                 break;
             case 6:
 
@@ -107,7 +111,7 @@ public class Main {
                             "2. Add a book or a magazine\n" +
                             "3. Delete book or magazine \n" +
                             "4. Change a book or a magazine\n" +
-                            "5. \n" +
+                            "5. Sync a product and a user\n" +
                             "6. \n" +
                             "7. \n" +
                             "8. \n" +
@@ -173,8 +177,11 @@ public class Main {
         ID = input.nextLine();
         System.out.println("Please insert the users's name:  ");
         name = input.nextLine();
-        System.out.println("What type is the user?" + "\n" + "1. Standar" + "\n" + "2. Premium");
-        typeOfUser = validateIntegerInput();
+        do {
+
+            System.out.println("What type is the user?" + "\n" + "1. Standar" + "\n" + "2. Premium");
+            typeOfUser = validateIntegerInput();
+        } while (typeOfUser < 1 || typeOfUser > 2);
 
         if (driver.addUser(driver.createUser(name, ID, typeOfUser))) {
             System.out.println("The user was added succesfully");
@@ -189,16 +196,21 @@ public class Main {
         String productName;
         int numberOfPages;
         Calendar publicationDate;
-        System.out.println("\n\tWould you like to: " +
-                "\n1.Buy a book" +
-                "\n2.Subscribe to a magazine");
-        bookOrMagazine = validateIntegerInput();
+        do {
+
+            System.out.println("\n\tWould you like to: " +
+                    "\n1.Buy a book" +
+                    "\n2.Subscribe to a magazine");
+            bookOrMagazine = validateIntegerInput();
+        } while (bookOrMagazine < 1 || bookOrMagazine > 2);
 
         System.out.println("Please insert the product's name: ");
         productName = input.nextLine();
+        do {
 
-        System.out.println("Please insert the number of pages: ");
-        numberOfPages = validateIntegerInput();
+            System.out.println("Please insert the number of pages: ");
+            numberOfPages = validateIntegerInput();
+        } while (numberOfPages < 0);
 
         while (true) {
             try {
@@ -235,16 +247,21 @@ public class Main {
         System.out.println("Please insert the URL leading to the repository: ");
         URL = input.nextLine();
 
-        System.out.println("Please insert the value of retail: ");
-        value = validateDoubleInput();
+        do {
+            System.out.println("Please insert the value of retail: ");
+            value = validateDoubleInput();
+        } while (value < 0);
 
         System.out.println("Please insert the review of the book: ");
         review = input.nextLine();
 
-        System.out.println(
-                "Please select the genre of the book: " + "\n" + "1.Science fiction" + "\n" + "2.Fantasy" + "\n"
-                        + "3.Historical novel");
-        genre = validateIntegerInput();
+        do {
+            System.out.println(
+                    "Please select the genre of the book: " + "\n" + "1.Science fiction" + "\n" + "2.Fantasy" + "\n"
+                            + "3.Historical novel");
+            genre = validateIntegerInput();
+        } while (genre < 1 || genre > 3);
+
         return driver
                 .addProduct(driver.createBibliographicProduct(productName, numberOfPages, publicationDate, URL, value,
                         review, genre, bookOrMagazine));
@@ -260,17 +277,20 @@ public class Main {
 
         System.out.println("Please insert the URL leading to the magazine cover: ");
         URL = input.nextLine();
+        do {
+            System.out.println("Please insert the value of subscription: ");
+            value = validateDoubleInput();
+        } while (value < 0);
 
-        System.out.println("Please insert the value of subscription: ");
-        value = validateDoubleInput();
-
-        System.out.println("Plase insert the frecuency of issuance: ");
+        System.out.println("Plase insert the frecuency of issuance: (EX. Monthly,weekly,yearly)");
         frecuencyOfIssuance = input.nextLine();
+        do {
 
-        System.out.println(
-                "Please select the category of the magazine: " + "\n" + "1.Varieties" + "\n" + "2.Design" + "\n"
-                        + "3.Scientific");
-        category = validateIntegerInput();
+            System.out.println(
+                    "Please select the category of the magazine: " + "\n" + "1.Varieties" + "\n" + "2.Design" + "\n"
+                            + "3.Scientific");
+            category = validateIntegerInput();
+        } while (category < 1 || category > 3);
         return driver
                 .addProduct(driver.createBibliographicProduct(productName, numberOfPages, publicationDate, URL, value,
                         frecuencyOfIssuance, category, bookOrMagazine));
@@ -303,17 +323,37 @@ public class Main {
 
         System.out.println("\nPlease insert the ID of the product you want to modify: ");
         productID = input.nextLine();
+        do {
 
-        System.out.println("\nWhat would you look to change:  " + driver.showProductLabeledAttributes(productID));
-        option = validateIntegerInput();
+            System.out.println("\nWhat would you look to change:  " + driver.showProductLabeledAttributes(productID));
+            option = validateIntegerInput();
+        } while (option < 1 || option > 7);
 
         System.out.println(driver.displayInformationByProduct(productID, option));
 
-        System.out.println("What would you like to change it to: \n>>");
+        System.out.print("What would you like to change it to: \n>>");
         newValue = input.nextLine();
 
         msg = driver.changeProduct(productID, option, newValue);
         System.out.println(msg);
+    }
+
+    public void obtainProduct() {
+        String userID;
+        String productID;
+        String productName;
+        System.out.println("Please insert the ID of the user");
+        userID = input.nextLine();
+        System.out.println("Please insert the product name");
+        productName = input.nextLine();
+
+        System.out.println(
+                "\n\tThese are product with similar names: \n" + driver.showProductsWithSimilarName(productName));
+
+        System.out.println("\nPlease insert the ID of the product you want to obtain: ");
+        productID = input.nextLine();
+
+        System.out.println(driver.addProductToUser(userID, productID));
     }
 
     private Calendar stringToCalendar(String dateString) throws ParseException {
