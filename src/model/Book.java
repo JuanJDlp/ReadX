@@ -2,16 +2,11 @@ package model;
 
 import java.util.Calendar;
 import java.util.Random;
+import model.Enumerations.Genre;
 
 public class Book extends BibliographicProduct {
     private String shortReview;
     private Genre genre;
-
-    public enum Genre { // Is this a good practice?
-        SCIENCE_FICTION,
-        FANTASY,
-        HISTORICAL_NOVEL,
-    }
 
     public Book(
             String name,
@@ -23,7 +18,7 @@ public class Book extends BibliographicProduct {
             Genre genre) {
 
         super(name, numberOfPages, publicationDate, URL, value);
-        super.ID = hexGenerator();
+        super.ID = idGenerator();
         this.shortReview = shortReview;
         this.genre = genre;
 
@@ -45,7 +40,7 @@ public class Book extends BibliographicProduct {
         this.shortReview = shortReview;
     }
 
-    private String hexGenerator() {
+    public String idGenerator() {
         Random random = new Random();
         String hexadecimal = "ABCDEF0123456789";
         String hexId = "";
@@ -56,7 +51,7 @@ public class Book extends BibliographicProduct {
     }
 
     public void reCreateID() {
-        super.ID = hexGenerator();
+        super.ID = idGenerator();
     }
 
     public String labbeldAttributes() {

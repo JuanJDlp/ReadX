@@ -1,6 +1,7 @@
 package Tests.modelTests;
 
 import model.*;
+import model.Enumerations.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -87,7 +88,7 @@ class UserTests {
     void validateCorrectAddingOfABook() {
         Controller driver = new Controller();
         BibliographicProduct book = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
-                Book.Genre.FANTASY);
+                Genre.FANTASY);
         AbstractUser user = controller.createUser("XXXXXXXX", "JD123", 1);
         driver.addUser(user);
         driver.addProduct(book);
@@ -101,7 +102,7 @@ class UserTests {
     void validateCorrectAddingOfAMagazine() {
         Controller driver = new Controller();
         BibliographicProduct magazine = new Magazine("News on java", 1, Calendar.getInstance(), "https", 9, "Mensually",
-                Magazine.Category.DESIGN);
+                Category.DESIGN);
         AbstractUser user = controller.createUser("XXXXXXXX", "JD123", 1);
         driver.addUser(user);
         driver.addProduct(magazine);
@@ -117,7 +118,7 @@ class UserTests {
         Controller driver = new Controller();
         BibliographicProduct magazine = new Magazine("News on java", 1, Calendar.getInstance(), "https", 987654,
                 "Mensually",
-                Magazine.Category.DESIGN);
+                Category.DESIGN);
         AbstractUser user = controller.createUser("XXXXXXXX", "JD123", 1);
 
         driver.addUser(user);
@@ -133,7 +134,7 @@ class UserTests {
         Controller driver = new Controller();
         BibliographicProduct magazine = new Magazine("News on java", 1, Calendar.getInstance(), "https", 987654,
                 "Mensually",
-                Magazine.Category.DESIGN);
+                Category.DESIGN);
         AbstractUser user = controller.createUser("XXXXXXXX", "JD123", 1);
 
         driver.addUser(user);
@@ -151,7 +152,7 @@ class UserTests {
         Controller driver = new Controller();
 
         BibliographicProduct book = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
-                Book.Genre.FANTASY);
+                Genre.FANTASY);
         AbstractUser user = controller.createUser("XXXXXXXX", "JD123", 1);
         driver.addUser(user);
         driver.addProduct(book);
@@ -168,7 +169,7 @@ class UserTests {
         Controller driver = new Controller();
 
         BibliographicProduct book = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
-                Book.Genre.FANTASY);
+                Genre.FANTASY);
         AbstractUser user = controller.createUser("XXXXXXXX", "JD123", 1);
         driver.addUser(user);
         driver.addProduct(book);
@@ -201,7 +202,7 @@ class UserTests {
         }
 
         BibliographicProduct book1 = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
-                Book.Genre.FANTASY);
+                Genre.FANTASY);
         book1.setID("7");
         driver.addProduct(book1);
 
@@ -231,7 +232,7 @@ class UserTests {
 
         BibliographicProduct magazine = new Magazine("News on java", 1, Calendar.getInstance(), "https", 987654,
                 "Mensually",
-                Magazine.Category.DESIGN);
+                Category.DESIGN);
         magazine.setID("7");
         driver.addProduct(magazine);
 

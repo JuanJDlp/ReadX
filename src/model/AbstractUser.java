@@ -80,7 +80,6 @@ public abstract class AbstractUser {
                 counter++;
         }
         return counter;
-
     }
 
     public String removeProduct(String productID) {

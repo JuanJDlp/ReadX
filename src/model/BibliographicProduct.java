@@ -98,11 +98,11 @@ public abstract class BibliographicProduct {
         ID = iD;
     }
 
-    public String labbeldAttributes() {
+    public abstract String idGenerator();
 
+    public String labbeldAttributes() {
         return "\n1.Name: " + name + "\n2.Number of pages: " + numberOfPages + "\n3.Publication date:"
                 + Utils.format(publicationDate.getTime()) + "\n4.URL:" + URL + "\n5.Value:" + value;
-
     }
 
     public String toString() {

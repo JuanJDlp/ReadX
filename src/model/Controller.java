@@ -8,8 +8,8 @@ import Factories.BookFactory;
 import Factories.MagazineFactory;
 import Factories.UserFactory;
 import MyHashMap.MyHashMap;
-import model.Book.Genre;
-import model.Magazine.Category;
+import model.Enumerations.Genre;
+import model.Enumerations.Category;
 
 public class Controller {
     private MyHashMap<String, AbstractUser> users;
@@ -249,7 +249,6 @@ public class Controller {
                     break;
                 case 5:
                     try {
-
                         product.setValue(Double.parseDouble(newValue));
                         msg = "Product value changed";
                     } catch (NumberFormatException e) {

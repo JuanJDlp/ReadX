@@ -5,7 +5,7 @@ import java.util.Calendar;
 import Interfaces.IAbstractBibliograpgicProductFractory;
 import model.BibliographicProduct;
 import model.Book;
-import model.Book.Genre;
+import model.Enumerations.Genre;
 
 public class BookFactory implements IAbstractBibliograpgicProductFractory {
     public BookFactory() {
@@ -21,7 +21,7 @@ public class BookFactory implements IAbstractBibliograpgicProductFractory {
             double value,
             String extraArgument,
             int category_genre) {
-        Book.Genre genre = null;
+        Genre genre = null;
         switch (category_genre) {
             case 1:
                 genre = Genre.SCIENCE_FICTION;

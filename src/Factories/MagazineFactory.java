@@ -5,7 +5,7 @@ import java.util.Calendar;
 import Interfaces.IAbstractBibliograpgicProductFractory;
 import model.BibliographicProduct;
 import model.Magazine;
-import model.Magazine.Category;
+import model.Enumerations.Category;
 
 public class MagazineFactory implements IAbstractBibliograpgicProductFractory {
 
@@ -22,7 +22,7 @@ public class MagazineFactory implements IAbstractBibliograpgicProductFractory {
             double value,
             String extraArgument,
             int category_genre) {
-        Magazine.Category category;
+        Category category;
         switch (category_genre) {
             case 1:
                 category = Category.VARIETIES;

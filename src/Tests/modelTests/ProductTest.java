@@ -1,7 +1,7 @@
 package Tests.modelTests;
 
 import model.*;
-import model.Book.Genre;
+import model.Enumerations.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -115,7 +115,7 @@ public class ProductTest {
     public void testDeleteBookProduct() {
         Controller driver = new Controller();
         BibliographicProduct book = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
-                Book.Genre.FANTASY);
+                Genre.FANTASY);
         book.setID("1");
         driver.addProduct(book);
         String result = driver.deleteProduct("1");
@@ -127,7 +127,7 @@ public class ProductTest {
     public void testDeleteMagazineProduct() {
         Controller driver = new Controller();
         BibliographicProduct magazine = new Magazine("News on java", 1, Calendar.getInstance(), "https", 9, "Mensually",
-                Magazine.Category.DESIGN);
+                Category.DESIGN);
         magazine.setID("2");
         driver.addProduct(magazine);
         String result = driver.deleteProduct("2");
@@ -146,7 +146,7 @@ public class ProductTest {
     public void testDeleteProductNotAdded() {
         Controller driver = new Controller();
         BibliographicProduct book = new Magazine("News on java", 1, Calendar.getInstance(), "https", 9, "Mensually",
-                Magazine.Category.DESIGN);
+                Category.DESIGN);
         driver.addProduct(book);
         String result = driver.deleteProduct("2");
         Assertions.assertEquals("We could not find this product", result);
@@ -159,7 +159,7 @@ public class ProductTest {
         // Arrange
         Controller library = new Controller();
         Book book = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
-                Book.Genre.FANTASY);
+                Genre.FANTASY);
 
         library.addProduct(book);
 
@@ -177,7 +177,7 @@ public class ProductTest {
         Controller library = new Controller();
         Magazine magazine = new Magazine("News on java", 1, Calendar.getInstance(), "https", 9,
                 "Mensually",
-                Magazine.Category.DESIGN);
+                Category.DESIGN);
         library.addProduct(magazine);
 
         // Act
@@ -193,7 +193,7 @@ public class ProductTest {
         // Arrange
         Controller controller = new Controller();
         Book book = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
-                Book.Genre.FANTASY);
+                Genre.FANTASY);
         controller.addProduct(book);
 
         // Act
@@ -208,7 +208,7 @@ public class ProductTest {
     public void testChangeProductURL() {
         // Create a test product
         Book book = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
-                Book.Genre.FANTASY);
+                Genre.FANTASY);
         controller.addProduct(book);
 
         // Change the URL of the product
@@ -224,7 +224,7 @@ public class ProductTest {
         // Create a test product
         Magazine magazine = new Magazine("News on java", 1, Calendar.getInstance(), "https", 9,
                 "Mensually",
-                Magazine.Category.DESIGN);
+                Category.DESIGN);
         controller.addProduct(magazine);
 
         // Change the value of the product
@@ -239,7 +239,7 @@ public class ProductTest {
     public void testChangeBookGenre() {
         // Create a test book
         Book book = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
-                Book.Genre.SCIENCE_FICTION);
+                Genre.SCIENCE_FICTION);
         controller.addProduct(book);
 
         // Change the genre of the book
@@ -255,7 +255,7 @@ public class ProductTest {
         // Create a test magazine
         Magazine magazine = new Magazine("News on java", 1, Calendar.getInstance(), "https", 9,
                 "Mensually",
-                Magazine.Category.DESIGN);
+                Category.DESIGN);
         controller.addProduct(magazine);
 
         // Change the category of the magazine
@@ -263,7 +263,7 @@ public class ProductTest {
 
         // Assert that the category was changed successfully
         Assertions.assertEquals("Product category changed", result);
-        Assertions.assertEquals(Magazine.Category.SCIENTIFIC, magazine.getCategory());
+        Assertions.assertEquals(Category.SCIENTIFIC, magazine.getCategory());
     }
 
 }

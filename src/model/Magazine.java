@@ -3,15 +3,11 @@ package model;
 import java.util.Calendar;
 import java.util.Random;
 
+import model.Enumerations.Category;
+
 public class Magazine extends BibliographicProduct {
     private String frecuencyOfIssuance;
     private Category category;
-
-    public enum Category {// Is this a good practice?
-        VARIETIES,
-        DESIGN,
-        SCIENTIFIC
-    }
 
     public Magazine(
             String name,
@@ -23,7 +19,7 @@ public class Magazine extends BibliographicProduct {
             Category category) {
 
         super(name, numberOfPages, publicationDate, URL, value);
-        super.ID = createAlhpaNumeric();
+        super.ID = idGenerator();
         this.frecuencyOfIssuance = frecuencyOfIssuance;
         this.category = category;
     }
@@ -44,7 +40,7 @@ public class Magazine extends BibliographicProduct {
         this.frecuencyOfIssuance = frecuencyOfIssuance;
     }
 
-    public String createAlhpaNumeric() {
+    public String idGenerator() {
         Random random = new Random();
         String characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         StringBuilder idBuilder = new StringBuilder();
@@ -57,7 +53,7 @@ public class Magazine extends BibliographicProduct {
     }
 
     public void reCreateID() {
-        super.ID = createAlhpaNumeric();
+        super.ID = idGenerator();
     }
 
     public String labbeldAttributes() {

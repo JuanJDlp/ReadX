@@ -111,7 +111,7 @@ public class Main {
                             "2. Add a book or a magazine\n" +
                             "3. Delete book or magazine \n" +
                             "4. Change a book or a magazine\n" +
-                            "5. Sync a product and a user\n" +
+                            "5. Purchase product\n" +
                             "6. Unsubscribe from a magazine\n" +
                             "7. \n" +
                             "8. \n" +
