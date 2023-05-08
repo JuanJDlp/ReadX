@@ -3,6 +3,8 @@ package model;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import Utils.Utils;
+
 public abstract class BibliographicProduct {
     protected String ID;
     protected String name;
@@ -12,7 +14,6 @@ public abstract class BibliographicProduct {
     protected double value;
     protected int copiesSold;
     protected int numberOfPagesRead;
-    private SimpleDateFormat sdf;
 
     public BibliographicProduct(
             String name,
@@ -27,7 +28,6 @@ public abstract class BibliographicProduct {
         this.value = value;
         this.copiesSold = 0;
         this.numberOfPagesRead = 0;
-        sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     }
 
@@ -56,7 +56,7 @@ public abstract class BibliographicProduct {
     }
 
     public String getPublicationDateString() {
-        return sdf.format(publicationDate.getTime());
+        return Utils.format(publicationDate.getTime());
     }
 
     public String getURL() {
@@ -102,13 +102,13 @@ public abstract class BibliographicProduct {
     public String labbeldAttributes() {
 
         return "\n1.Name: " + name + "\n2.Number of pages: " + numberOfPages + "\n3.Publication date:"
-                + sdf.format(publicationDate.getTime()) + "\n4.URL:" + URL + "\n5.Value:" + value;
+                + Utils.format(publicationDate.getTime()) + "\n4.URL:" + URL + "\n5.Value:" + value;
 
     }
 
     public String toString() {
         return "ID:" + ID + "\nName: " + name + "\nNumber of pages: " + numberOfPages + "\nPublication date:"
-                + sdf.format(publicationDate.getTime()) + "\nURL:" + URL + "\nValue:" + value +
+                + Utils.format(publicationDate.getTime()) + "\nURL:" + URL + "\nValue:" + value +
                 "\nCopies sold:" + copiesSold + "\nnumber of pages read: " + numberOfPagesRead;
     }
 

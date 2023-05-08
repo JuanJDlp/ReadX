@@ -54,6 +54,10 @@ public class MyHashMap<K, V> implements IMyHashMap<K, V>, Iterable<MyHashMap.Nod
     public V put(K key, V val) {
         int index = hashFunction(key);
         Node<K, V> node = table[index];
+        if (containsKey(key)) { // This should make sure that no Duplicated items can be added making it behave
+                                // as a hash set.
+            return get(key);
+        }
         if (node == null) {
             table[index] = new Node<K, V>(key, val);
         } else {

@@ -1,10 +1,10 @@
 package ui;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Scanner;
 import model.Controller;
+import Utils.Utils;
 
 /**
  * This class is encharged of displaying all the UI designm
@@ -215,7 +215,7 @@ public class Main {
         while (true) {
             try {
                 System.out.println("Please insert the publication date (dd/MM/yyyy):");
-                publicationDate = stringToCalendar(input.nextLine());
+                publicationDate = Utils.stringToCalendar(input.nextLine());
                 break;
             } catch (ParseException e) {
                 System.out.println("\tERROR please inserte the right format (dd/MM/yyyy)");
@@ -374,10 +374,4 @@ public class Main {
 
     }
 
-    private Calendar stringToCalendar(String dateString) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dateFormat.parse(dateString));
-        return calendar;
-    }
 }

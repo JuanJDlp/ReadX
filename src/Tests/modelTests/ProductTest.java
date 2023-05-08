@@ -88,7 +88,7 @@ public class ProductTest {
         ArrayList<BibliographicProduct> products = new ArrayList<>();
         ArrayList<String> seenIDs = new ArrayList<>();
 
-        for (int i = 0; i < 3000; i++) {
+        for (int i = 0; i < 4095; i++) { // Max amount of products without repeting ID with 3 HEX numbers
             BibliographicProduct product = driver.createBibliographicProduct("Juegos del hambre " + i, i,
                     Calendar.getInstance(), "www.juegosdelhambre" + i + ".com", i, "Review", 1,
                     1);

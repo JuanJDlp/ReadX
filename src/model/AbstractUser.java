@@ -2,8 +2,8 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.text.SimpleDateFormat;
 import MyHashMap.MyHashMap;
+import Utils.Utils;
 
 public abstract class AbstractUser {
     protected String ID;
@@ -11,13 +11,11 @@ public abstract class AbstractUser {
     protected Calendar dateOfEntering;
     protected MyHashMap<String, BibliographicProduct> products;
     protected ArrayList<Recipt> recipts;
-    private SimpleDateFormat sdf;
 
     public AbstractUser(String ID, String name, Calendar dateOfEntering) {
         this.ID = ID;
         this.name = name;
         this.dateOfEntering = dateOfEntering;
-        sdf = new SimpleDateFormat("dd/MM/yyyy");
         products = new MyHashMap<>();
         recipts = new ArrayList<>();
     }
@@ -55,7 +53,7 @@ public abstract class AbstractUser {
     }
 
     public String addProduct(BibliographicProduct product) {
-        String msg = "It wasn't possible to add this product";
+        String msg = "";
         products.put(product.getID(), product);
         recipts.add(new Recipt(product.getValue()));
         if (product instanceof Book) {
@@ -96,6 +94,6 @@ public abstract class AbstractUser {
     }
 
     public String toString() {
-        return "ID: " + ID + "\nName: " + name + "\nDate of entering: " + sdf.format(dateOfEntering.getTime());
+        return "ID: " + ID + "\nName: " + name + "\nDate of entering: " + Utils.format(dateOfEntering.getTime());
     }
 }
