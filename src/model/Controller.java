@@ -1,10 +1,9 @@
 package model;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-
+import Utils.Utils;
 import Factories.BookFactory;
 import Factories.MagazineFactory;
 import Factories.UserFactory;
@@ -238,7 +237,7 @@ public class Controller {
                     break;
                 case 3:
                     try {
-                        product.setPublicationDate(stringToCalendar(newValue));
+                        product.setPublicationDate(Utils.stringToCalendar(newValue));
                         msg = "Product publication date changed";
                         break;
                     } catch (ParseException e) {
@@ -284,13 +283,6 @@ public class Controller {
             return null;
         }
         return products.get(findProductByID(ID));
-    }
-
-    private Calendar stringToCalendar(String dateString) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dateFormat.parse(dateString));
-        return calendar;
     }
 
     public String addProductToUser(String userID, String productID) {
