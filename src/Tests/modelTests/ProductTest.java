@@ -88,11 +88,11 @@ public class ProductTest {
         ArrayList<BibliographicProduct> products = new ArrayList<>();
         ArrayList<String> seenIDs = new ArrayList<>();
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 3000; i++) {
             BibliographicProduct product = driver.createBibliographicProduct("Juegos del hambre " + i, i,
                     Calendar.getInstance(), "www.juegosdelhambre" + i + ".com", i, "Review", 1,
                     1);
-            products.add(product);
+            driver.addProduct(product);
         }
 
         boolean hasDuplicates = false;
@@ -150,27 +150,6 @@ public class ProductTest {
         driver.addProduct(book);
         String result = driver.deleteProduct("2");
         Assertions.assertEquals("We could not find this product", result);
-        Assertions.assertEquals(1, driver.getProducts().size());
-    }
-
-    @Test
-    public void testWhenHavingMultipleProductWithTheSameIDOnlyDeleteTheFirstOneYouFind() {
-        Controller driver = new Controller();
-
-        BibliographicProduct book1 = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
-                Book.Genre.FANTASY);
-        BibliographicProduct magazine1 = new Magazine("News on java", 1, Calendar.getInstance(), "https", 9,
-                "Mensually",
-                Magazine.Category.DESIGN);
-
-        magazine1.setID("1");
-        book1.setID("1");
-
-        driver.addProduct(book1);
-        driver.addProduct(magazine1);
-        driver.deleteProduct("1");
-
-        Assertions.assertEquals(0, driver.findProductByID("1"));
         Assertions.assertEquals(1, driver.getProducts().size());
     }
 

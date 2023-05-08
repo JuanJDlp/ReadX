@@ -56,6 +56,10 @@ public class Magazine extends BibliographicProduct {
         return idBuilder.toString();
     }
 
+    public void reCreateID() {
+        super.ID = createAlhpaNumeric();
+    }
+
     public String labbeldAttributes() {
         return super.labbeldAttributes() +
                 "\n6.Frecuency of issuance: " + frecuencyOfIssuance +

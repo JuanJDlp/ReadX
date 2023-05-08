@@ -112,7 +112,7 @@ public class Main {
                             "3. Delete book or magazine \n" +
                             "4. Change a book or a magazine\n" +
                             "5. Sync a product and a user\n" +
-                            "6. \n" +
+                            "6. Unsubscribe from a magazine\n" +
                             "7. \n" +
                             "8. \n" +
 
@@ -354,6 +354,24 @@ public class Main {
         productID = input.nextLine();
 
         System.out.println(driver.addProductToUser(userID, productID));
+    }
+
+    public void unsubscribeMagazine() {
+        String userID;
+        String productID;
+        String productName;
+        System.out.println("Please insert the ID of the user");
+        userID = input.nextLine();
+        System.out.println("Please insert the product name");
+        productName = input.nextLine();
+
+        System.out.println(
+                "\n\tThese are product with similar names: \n" + driver.showProductsWithSimilarName(productName));
+
+        System.out.println("\nPlease insert the ID of the magazine you want to unsibscribe from: ");
+        productID = input.nextLine();
+        System.out.println(driver.unsubscribeMagazine(userID, productID));
+
     }
 
     private Calendar stringToCalendar(String dateString) throws ParseException {

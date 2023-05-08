@@ -1,6 +1,8 @@
 package MyHashMap;
 
-public class MyHashMap<K, V> implements IMyHashMap<K, V> {
+import java.util.Iterator;
+
+public class MyHashMap<K, V> implements IMyHashMap<K, V>, Iterable<MyHashMap.Node<K, V>> {
 
     private int size;
     private int DEFAULT_SIZE;
@@ -13,7 +15,7 @@ public class MyHashMap<K, V> implements IMyHashMap<K, V> {
         this.table = new Node[DEFAULT_SIZE];
     }
 
-    static class Node<K, V> {
+    public static class Node<K, V> {
         final K key;
         final int hash;
         V value;
@@ -133,6 +135,38 @@ public class MyHashMap<K, V> implements IMyHashMap<K, V> {
     @Override
     public boolean isEmpty() {
         return size == 0;
+    }
+
+    @Override
+    public Iterator<Node<K, V>> iterator() {
+        return new Iterator<Node<K, V>>() {
+            int currentIndex = 0;
+            Node<K, V> currentNode = null;
+
+            @Override
+            public boolean hasNext() {
+                while (currentIndex < table.length && table[currentIndex] == null) {
+                    currentIndex++;
+                }
+                if (currentIndex >= table.length) {
+                    return false;
+                }
+                currentNode = table[currentIndex];
+                return true;
+            }
+
+            @Override
+            public Node<K, V> next() {
+                Node<K, V> node = currentNode;
+                if (node.next != null) {
+                    currentNode = node.next;
+                } else {
+                    currentIndex++;
+                    hasNext();
+                }
+                return node;
+            }
+        };
     }
 
     public int hashFunction(K key) {

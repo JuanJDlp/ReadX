@@ -54,9 +54,45 @@ public abstract class AbstractUser {
         return recipts;
     }
 
-    public void addProduct(BibliographicProduct product) {
+    public String addProduct(BibliographicProduct product) {
+        String msg = "It wasn't possible to add this product";
         products.put(product.getID(), product);
         recipts.add(new Recipt(product.getValue()));
+        if (product instanceof Book) {
+            msg = "Product added to user " + name;
+        } else if (product instanceof Magazine) {
+            msg = "User " + name + " was subscribed to the magazine!";
+        }
+        return msg;
+    }
+
+    public int amountOfBook() {
+        int counter = 0;
+        for (MyHashMap.Node<String, BibliographicProduct> entry : products) {
+            if (entry != null && entry.getValue() instanceof Book)
+                counter++;
+        }
+        return counter;
+    }
+
+    public int amountOfMagazines() {
+        int counter = 0;
+        for (MyHashMap.Node<String, BibliographicProduct> entry : products) {
+            if (entry != null && entry.getValue() instanceof Magazine)
+                counter++;
+        }
+        return counter;
+
+    }
+
+    public String removeProduct(String productID) {
+        String msg = "This user does not have this magazine";
+
+        if (products.containsKey(productID)) {
+            products.remove(ID);
+            msg = "User " + name + " was unsubscribed to the magazine!";
+        }
+        return msg;
     }
 
     public String toString() {

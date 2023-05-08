@@ -5,6 +5,7 @@ import model.*;
 import java.util.Calendar;
 
 import Factories.*;
+import Interfaces.IAbstractBibliograpgicProductFractory;
 
 public class initProgram {
     public static void initModel(Controller driver) {
@@ -19,8 +20,8 @@ public class initProgram {
     }
 
     public static void initProducts(Controller driver) {
-        BookFactory bookFactory = new BookFactory();
-        MagazineFactory magazineFactory = new MagazineFactory();
+        IAbstractBibliograpgicProductFractory bookFactory = new BookFactory();
+        IAbstractBibliograpgicProductFractory magazineFactory = new MagazineFactory();
         for (int i = 0; i < 100; i++) {
             driver.getProducts().add(bookFactory.createProduct("Book#" + i, i, Calendar.getInstance(),
                     "hhtp://www.book# [ " + i + " ].com", i, "book#" + i + " talks about a book!", 1));

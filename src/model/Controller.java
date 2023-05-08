@@ -85,6 +85,13 @@ public class Controller {
     }
 
     public String addProduct(BibliographicProduct product) {
+        while (findProductByID(product.getID()) != -1) {
+            if (product instanceof Book) {
+                ((Book) product).reCreateID();
+            } else if (product instanceof Magazine) {
+                ((Magazine) product).reCreateID();
+            }
+        }
         products.add(product);
         return product.getID();
     }
@@ -138,7 +145,7 @@ public class Controller {
 
     }
 
-    public Genre makeIntInputToGenre(int input) {
+    private Genre makeIntInputToGenre(int input) {
         switch (input) {
             case 1:
                 return Genre.SCIENCE_FICTION;
@@ -151,7 +158,7 @@ public class Controller {
         }
     }
 
-    public Category makeIntInputToCategory(int input) {
+    private Category makeIntInputToCategory(int input) {
         switch (input) {
             case 1:
                 return Category.VARIETIES;
@@ -287,25 +294,44 @@ public class Controller {
     }
 
     public String addProductToUser(String userID, String productID) {
-        String msg = "Either the user or the product ID was not found";
+        AbstractUser user = users.get(userID);
         BibliographicProduct product = getProductByID(productID);
+
+        if (user == null || product == null) {
+            return "Either the user or the product ID was not found";
+        }
+
+        if (user instanceof Standar) {
+            if (user.amountOfBook() >= 5) {
+                return "The user has already 5 books";
+            }
+            if (user.amountOfMagazines() >= 2) {
+                return "The user is already subscribed to 2 magazines";
+            }
+        }
+
+        if (user.getProducts().containsKey(productID)) {
+            return "This user already has this product";
+        }
+
+        product.setCopiesSold(product.getCopiesSold() + 1);
+        String msg = user.addProduct(product);
+        return msg;
+    }
+
+    public String unsubscribeMagazine(String userID, String magazineID) {
+        String msg = "Either the user or the magazine ID was not found";
+        BibliographicProduct product = getProductByID(magazineID);
         AbstractUser user = users.get(userID);
 
         if (product != null && user != null) {
-            if (!user.getProducts().containsKey(productID)) {
-                product.setCopiesSold(product.getCopiesSold() + 1);
-                user.addProduct(product);
-
-                if (product instanceof Book) {
-                    msg = "Product added to user " + user.getName();
-                } else if (product instanceof Magazine) {
-                    msg = "User " + user.getName() + " was subscribed to the magazine!";
-                }
+            if (product instanceof Magazine) {
+                msg = user.removeProduct(magazineID);
             } else {
-                msg = "This user alredy has this prodcut";
+                msg = "The product you selceted is not a magazine";
             }
-
         }
+
         return msg;
     }
 }

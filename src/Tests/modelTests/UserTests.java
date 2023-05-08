@@ -8,6 +8,8 @@ import java.util.Calendar;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import Factories.*;
+import Interfaces.IAbstractBibliograpgicProductFractory;
 
 class UserTests {
     private Controller controller;
@@ -177,4 +179,65 @@ class UserTests {
         Assertions.assertTrue(book.getCopiesSold() == 1);
 
     }
+
+    @Test
+    void standarUserCanOnlyHaveFieBooks() {
+        Controller driver = new Controller();
+        IAbstractBibliograpgicProductFractory bookFactory = new BookFactory();
+
+        AbstractUser user = controller.createUser("XXXXXXXX", "JD123", 1);
+        driver.addUser(user);
+
+        for (int i = 0; i < 6; i++) {
+            driver.getProducts().add(bookFactory.createProduct("Book#" + i, i, Calendar.getInstance(),
+                    "hhtp://www.book# [ " + i + " ].com", i, "book#" + i + " talks about a book!", 1));
+        }
+        for (int i = 0; i < 6; i++) {
+            driver.getProducts().get(i).setID(Integer.toString(i));
+        }
+
+        for (int i = 0; i < 5; i++) {
+            driver.addProductToUser(user.getID(), Integer.toString(i));
+        }
+
+        BibliographicProduct book1 = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
+                Book.Genre.FANTASY);
+        book1.setID("7");
+        driver.addProduct(book1);
+
+        Assertions.assertEquals("The user has already 5 books", driver.addProductToUser(user.getID(), "7"));
+        Assertions.assertTrue(user.getProducts().size() == 5);
+    }
+
+    @Test
+    void standarUserCanOnlyHaveTwoMagazines() {
+        Controller driver = new Controller();
+        IAbstractBibliograpgicProductFractory magazineFactory = new MagazineFactory();
+
+        AbstractUser user = controller.createUser("XXXXXXXX", "JD123", 1);
+        driver.addUser(user);
+
+        for (int i = 0; i < 6; i++) {
+            driver.getProducts().add(magazineFactory.createProduct("Magazine#" + i, i, Calendar.getInstance(),
+                    "hhtp://www.book# [ " + i + " ].com", i, "Muensualy", 1));
+        }
+        for (int i = 0; i < 6; i++) {
+            driver.getProducts().get(i).setID(Integer.toString(i));
+        }
+
+        for (int i = 0; i < 100; i++) {
+            driver.addProductToUser(user.getID(), Integer.toString(i));
+        }
+
+        BibliographicProduct magazine = new Magazine("News on java", 1, Calendar.getInstance(), "https", 987654,
+                "Mensually",
+                Magazine.Category.DESIGN);
+        magazine.setID("7");
+        driver.addProduct(magazine);
+
+        Assertions.assertEquals("The user is already subscribed to 2 magazines",
+                driver.addProductToUser(user.getID(), "7"));
+        Assertions.assertTrue(user.getProducts().size() == 2);
+    }
+
 }

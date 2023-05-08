@@ -55,6 +55,10 @@ public class Book extends BibliographicProduct {
         return hexId;
     }
 
+    public void reCreateID() {
+        super.ID = hexGenerator();
+    }
+
     public String labbeldAttributes() {
         return super.labbeldAttributes() + "\n" +
                 "6.Short Review: '" + shortReview + "'" +
