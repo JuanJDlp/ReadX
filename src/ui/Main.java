@@ -211,6 +211,7 @@ public class Main {
 
         System.out.println("Please insert the product's name: ");
         productName = input.nextLine();
+
         do {
 
             System.out.println("Please insert the number of pages: ");
@@ -347,18 +348,32 @@ public class Main {
         String userID;
         String productID;
         String productName;
+        char addAnotherProduct = ' ';
         System.out.println("Please insert the ID of the user");
         userID = input.nextLine();
-        System.out.println("Please insert the product name");
-        productName = input.nextLine();
 
-        System.out.println(
-                "\n\tThese are product with similar names: \n" + driver.showProductsWithSimilarName(productName));
+        do {
+            System.out.println("Please insert the product name");
+            productName = input.nextLine();
 
-        System.out.println("\nPlease insert the ID of the product you want to obtain: ");
-        productID = input.nextLine();
+            System.out.println(
+                    "\n\tThese are product with similar names: \n" + driver.showProductsWithSimilarName(productName));
 
-        System.out.println(driver.addProductToUser(userID, productID));
+            System.out.println("\nPlease insert the ID of the product you want to obtain: ");
+            productID = input.nextLine();
+
+            System.out.println(driver.addProductToUser(userID, productID));
+
+            System.out.println("Would you like to add another product? (Y/n)");
+            try {
+                addAnotherProduct = input.nextLine().charAt(0);
+            } catch (StringIndexOutOfBoundsException e) {
+                addAnotherProduct = 'y';
+            }
+
+        } while (addAnotherProduct == 'y' || addAnotherProduct == 'Y');
+        System.out.println(driver.checkOutShoppingCart(userID));
+
     }
 
     public void unsubscribeMagazine() {

@@ -25,6 +25,7 @@ public class ReadingSesionTest {
         driver.addUser(user);
 
         driver.addProductToUser(user.getID(), magazine.getID());
+        driver.checkOutShoppingCart(user.getID());
 
         Assertions.assertEquals(0, magazine.getNumberOfPagesRead());
 
@@ -50,6 +51,7 @@ public class ReadingSesionTest {
         driver.addUser(user);
 
         driver.addProductToUser(user.getID(), magazine.getID());
+        driver.checkOutShoppingCart(user.getID());
 
         // Act
 
@@ -80,6 +82,7 @@ public class ReadingSesionTest {
         driver.addUser(user);
 
         driver.addProductToUser(user.getID(), magazine.getID());
+        driver.checkOutShoppingCart(user.getID());
 
         for (int i = 0; i < 88; i++) {
             driver.startAReagindSession(magazine.getID(), 's', user.getID());
@@ -117,6 +120,8 @@ public class ReadingSesionTest {
 
         driver.addProductToUser(user.getID(), magazine.getID());
         driver.addProductToUser(user1.getID(), magazine.getID());
+        driver.checkOutShoppingCart(user.getID());
+        driver.checkOutShoppingCart(user1.getID());
 
         for (int i = 0; i < 80; i++) {
             driver.startAReagindSession(magazine.getID(), 's', user.getID());

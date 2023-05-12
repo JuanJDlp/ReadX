@@ -291,6 +291,14 @@ public class Controller {
         return products.get(findProductByID(ID));
     }
 
+    public String checkOutShoppingCart(String userID) {
+        AbstractUser user = users.get(userID);
+        if (user == null) {
+            return "The user does not exist";
+        }
+        return user.checkOutShoppingCart();
+    }
+
     public String addProductToUser(String userID, String productID) {
         AbstractUser user = users.get(userID);
         BibliographicProduct product = getProductByID(productID);
@@ -313,7 +321,7 @@ public class Controller {
         }
 
         product.setCopiesSold(product.getCopiesSold() + 1);
-        String msg = user.addProduct(product);
+        String msg = user.addProductToCar(product);
         return msg;
     }
 

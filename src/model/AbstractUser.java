@@ -10,6 +10,7 @@ public abstract class AbstractUser {
     protected Calendar dateOfEntering;
     protected ArrayList<BibliographicProduct> products;
     protected ArrayList<Recipt> recipts;
+    protected ArrayList<BibliographicProduct> car;
 
     public AbstractUser(String ID, String name, Calendar dateOfEntering) {
         this.ID = ID;
@@ -17,6 +18,7 @@ public abstract class AbstractUser {
         this.dateOfEntering = dateOfEntering;
         products = new ArrayList<>();
         recipts = new ArrayList<>();
+        car = new ArrayList<>();
     }
 
     public Calendar getDateOfEntering() {
@@ -51,20 +53,46 @@ public abstract class AbstractUser {
         return recipts;
     }
 
-    public String addProduct(BibliographicProduct product) {
-        String msg = "";
-        try {
-            products.add(product.clone());
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+    public ArrayList<BibliographicProduct> getCar() {
+        return car;
+    }
+
+    public String checkOutShoppingCart() {
+        products.addAll(car);
+        Recipt recipt = new Recipt(car);
+        recipts.add(recipt);
+        car.clear();
+        return recipt.getContent();
+    }
+
+    public String addProductToCar(BibliographicProduct product) {
+        String msg = "The user alredy added this product to his car";
+        if (!isProductInCar(product.getID())) {
+            try {
+                car.add(product.clone());
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+            if (product instanceof Book) {
+                msg = "Product added to user cart";
+            } else if (product instanceof Magazine) {
+                msg = "The magazine was aded to the car.";
+            }
         }
-        recipts.add(new Recipt(product.getValue()));
-        if (product instanceof Book) {
-            msg = "Product added to user " + name;
-        } else if (product instanceof Magazine) {
-            msg = "User " + name + " was subscribed to the magazine!";
-        }
+
         return msg;
+    }
+
+    public boolean isProductInCar(String ID) {
+        boolean found = false;
+        BibliographicProduct product = null;
+        for (int i = 0; i < car.size() && !found; i++) {
+            if (car.get(i).getID().toLowerCase().equals(ID.toLowerCase())) {
+                found = true;
+                product = car.get(i);
+            }
+        }
+        return product != null;
     }
 
     public int amountOfBook() {
@@ -121,10 +149,39 @@ public abstract class AbstractUser {
 
     public String removeProduct(String productID) {
         String msg = "This user does not have this magazine";
-        BibliographicProduct product = products.get(findProductByID(productID));
-        if (products.contains(product)) {
+        BibliographicProduct product = getProductByID(productID);
+        if (products.contains(product) && product != null) {
             products.remove(product);
             msg = "User " + name + " was unsubscribed to the magazine!";
+        }
+        return msg;
+    }
+
+    /**
+     * The function adds a bibliographic product to a list and generates a message
+     * based on the type of
+     * product added.
+     * 
+     * @param product A BibliographicProduct object that represents the product
+     *                being added to the system.
+     *                It could be either a Book or a Magazine object.
+     * @return The method is returning a message (String) indicating whether a
+     *         product was added to the
+     *         user or if the user was subscribed to a magazine. The specific
+     *         message depends on the type of
+     *         product being added (Book or Magazine) and the name of the user.
+     */
+    public String addProduct(BibliographicProduct product) {
+        String msg = "";
+        try {
+            products.add(product.clone());
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        if (product instanceof Book) {
+            msg = "Product added to user " + name;
+        } else if (product instanceof Magazine) {
+            msg = "User " + name + " was subscribed to the magazine!";
         }
         return msg;
     }

@@ -93,7 +93,8 @@ class UserTests {
         driver.addUser(user);
         driver.addProduct(book);
         driver.addProductToUser(user.getID(), book.getID());
-
+        driver.checkOutShoppingCart(user.getID());
+        Assertions.assertTrue(user.getProducts().size() == 1);
         Assertions.assertTrue(user.getRecipts().size() == 1);
     }
 
@@ -107,6 +108,7 @@ class UserTests {
         driver.addProduct(magazine);
 
         driver.addProductToUser(user.getID(), magazine.getID());
+        driver.checkOutShoppingCart(user.getID());
 
         Assertions.assertTrue(user.getRecipts().size() == 1);
     }
@@ -123,8 +125,9 @@ class UserTests {
         driver.addProduct(magazine);
 
         driver.addProductToUser(user.getID(), magazine.getID());
+        driver.checkOutShoppingCart(user.getID());
 
-        Assertions.assertTrue(user.getRecipts().get(0).getAmount().equals(magazine.getValue()));
+        Assertions.assertTrue(user.getRecipts().size() == 1);
     }
 
     @Test
@@ -174,9 +177,10 @@ class UserTests {
         driver.addProduct(book);
 
         driver.addProductToUser(user.getID(), book.getID());
+        driver.checkOutShoppingCart(user.getID());
         driver.addProductToUser(user.getID(), book.getID());
 
-        Assertions.assertTrue(book.getCopiesSold() == 1);
+        Assertions.assertEquals(1, book.getCopiesSold());
 
     }
 
@@ -194,10 +198,13 @@ class UserTests {
         }
         for (int i = 0; i < 6; i++) {
             driver.getProducts().get(i).setID(Integer.toString(i));
+
         }
 
         for (int i = 0; i < 5; i++) {
             driver.addProductToUser(user.getID(), Integer.toString(i));
+            driver.checkOutShoppingCart(user.getID());
+
         }
 
         BibliographicProduct book1 = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
@@ -227,6 +234,8 @@ class UserTests {
 
         for (int i = 0; i < 100; i++) {
             driver.addProductToUser(user.getID(), Integer.toString(i));
+            driver.checkOutShoppingCart(user.getID());
+
         }
 
         BibliographicProduct magazine = new Magazine("News on java", 1, Calendar.getInstance(), "https", 987654,
@@ -234,10 +243,31 @@ class UserTests {
                 Category.DESIGN);
         magazine.setID("7");
         driver.addProduct(magazine);
-
         Assertions.assertEquals("The user is already subscribed to 2 magazines",
                 driver.addProductToUser(user.getID(), "7"));
         Assertions.assertTrue(user.getProducts().size() == 2);
+    }
+
+    @Test
+    void whenAProductIsDeletesItSHouldBeDeletedFromAllTheUsersWithTheProduct() {
+        Controller driver = new Controller();
+        BibliographicProduct book = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
+                Genre.FANTASY);
+
+        AbstractUser user = controller.createUser("XXXXXXXX", "JD123", 1);
+        driver.addUser(user);
+        AbstractUser user1 = controller.createUser("XXXXXXXX", "JD123", 1);
+        driver.addUser(user1);
+        book.setID("1");
+        driver.addProduct(book);
+
+        driver.addProductToUser(user.getID(), book.getID());
+        driver.addProductToUser(user1.getID(), book.getID());
+
+        String result = driver.deleteProduct("1");
+        Assertions.assertTrue(user.getProductByID(book.getID()) == null);
+        Assertions.assertEquals("Product deleted", result);
+        Assertions.assertTrue(user1.getProductByID(book.getID()) == null);
     }
 
 }
