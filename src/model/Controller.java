@@ -3,6 +3,7 @@ package model;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Random;
 import Utils.Utils;
 import Factories.BookFactory;
 import Factories.MagazineFactory;
@@ -30,6 +31,10 @@ public class Controller {
 
     public boolean areThereUsers() {
         return !users.isEmpty();
+    }
+
+    public boolean areTherProducts() {
+        return !products.isEmpty();
     }
 
     public AbstractUser createUser(String name, String ID, int typeOfUser) {
@@ -127,6 +132,9 @@ public class Controller {
         String msg = "We could not find this product";
         if (findProductByID(ID) != -1) {
             products.remove(findProductByID(ID));
+            for (MyHashMap.Node<String, AbstractUser> entry : users) {
+                entry.getValue().removeProduct(ID);
+            }
             msg = "Product deleted";
         }
         return msg;
@@ -141,7 +149,6 @@ public class Controller {
                 position = i;
             }
         return position;
-
     }
 
     private Genre makeIntInputToGenre(int input) {
@@ -301,7 +308,7 @@ public class Controller {
             }
         }
 
-        if (user.getProducts().containsKey(productID)) {
+        if (user.hasProduct(productID)) {
             return "This user already has this product";
         }
 
@@ -318,6 +325,7 @@ public class Controller {
         if (product != null && user != null) {
             if (product instanceof Magazine) {
                 msg = user.removeProduct(magazineID);
+                product.setCopiesSold(product.getCopiesSold() - 1);
             } else {
                 msg = "The product you selceted is not a magazine";
             }
@@ -325,4 +333,63 @@ public class Controller {
 
         return msg;
     }
+
+    public String productsOfAUser(String userID) {
+        String info = "The user does not exist";
+        AbstractUser user = users.get(userID);
+        if (user != null) {
+            info = user.productsOfAUser();
+        }
+        return info;
+
+    }
+
+    public String startAReagindSession(String productID, char option, String userID) {
+        String reading = "";
+        BibliographicProduct userProduct = users.get(userID).getProductByID(productID);
+        AbstractUser user = users.get(userID);
+        int currentPage = 0;
+
+        if (userProduct != null && user.hasProduct(productID)) {
+
+            if (option == 'a' || option == 'A') {
+
+                currentPage = userProduct.previousPage();
+
+            } else if (option == 's' || option == 'S') {
+
+                currentPage = userProduct.nextPage();
+
+            } else if (option == 'B' || option == 'b') {
+                BibliographicProduct product = products.get(findProductByID(productID));
+                product.setNumberOfPagesRead(product.getNumberOfPagesRead() + userProduct.getNumberOfPagesRead());
+            }
+
+            reading = "\n\tReading session in progress...\n" +
+                    "\nReading: " + userProduct.getName() +
+                    "\nReagind page # " + userProduct.getCurrentPageBeingRead() + " of "
+                    + userProduct.getNumberOfPages() +
+                    "\n\nPress 'a' to go to the prevoius page" +
+                    "\nPress 's' to go to the next page" +
+                    "\nPress 'B' to go back to the library" + "\n\n" +
+                    showPublicity(currentPage, user);
+        } else {
+            reading = "The user does not have this book";
+        }
+        return reading;
+
+    }
+
+    public String showPublicity(int currentPage, AbstractUser user) {
+        Random rand = new Random();
+        String[] adds = { "Subscribe to Combo Plus and get Disney+ and Star+ at an incredible price!",
+                "Now your pets have a favorite app: Laika. The best products for your furry.",
+                "We are celebrating our anniversary! Visit your nearest Éxito and be surprised with the best offers." };
+        String add = "";
+        if (currentPage % 5 == 0 && (user instanceof Standar)) {
+            add = adds[rand.nextInt((2 - 1) + 1) + 1];
+        }
+        return add;
+    }
+
 }

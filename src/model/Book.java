@@ -4,6 +4,12 @@ import java.util.Calendar;
 import java.util.Random;
 import model.Enumerations.Genre;
 
+/**
+ * The Book class extends the BibliographicProduct class and includes attributes
+ * such as shortReview
+ * and genre, as well as methods for generating and re-creating IDs and
+ * displaying labeled attributes.
+ */
 public class Book extends BibliographicProduct {
     private String shortReview;
     private Genre genre;

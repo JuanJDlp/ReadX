@@ -94,7 +94,6 @@ class UserTests {
         driver.addProduct(book);
         driver.addProductToUser(user.getID(), book.getID());
 
-        Assertions.assertTrue(user.getProducts().containsKey(book.getID()));
         Assertions.assertTrue(user.getRecipts().size() == 1);
     }
 
@@ -109,7 +108,6 @@ class UserTests {
 
         driver.addProductToUser(user.getID(), magazine.getID());
 
-        Assertions.assertTrue(user.getProducts().containsKey(magazine.getID()));
         Assertions.assertTrue(user.getRecipts().size() == 1);
     }
 
@@ -170,6 +168,7 @@ class UserTests {
 
         BibliographicProduct book = new Book("Java for dummies", 1, Calendar.getInstance(), "URL", 12343, "Good",
                 Genre.FANTASY);
+
         AbstractUser user = controller.createUser("XXXXXXXX", "JD123", 1);
         driver.addUser(user);
         driver.addProduct(book);

@@ -3,6 +3,7 @@ package ui;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Scanner;
+
 import model.Controller;
 import Utils.Utils;
 
@@ -47,18 +48,14 @@ public class Main {
                 registerUser();
                 break;
             case 2:
-                if (driver.areThereUsers()) {
-                    registerBibliographicProduct();
-                } else {
-                    System.out.println("It wasn't possible to find any users in the data base.");
-                }
+                registerBibliographicProduct();
                 break;
 
             case 3:
-                if (driver.areThereUsers()) {
+                if (driver.areTherProducts()) {
                     deleteProduct();
                 } else {
-                    System.out.println("It wasn't possible to find any users in the data base.");
+                    System.out.println("It wasn't possible to find any products in the data base");
                 }
                 break;
 
@@ -70,17 +67,25 @@ public class Main {
                 }
                 break;
             case 5:
-                if (driver.areThereUsers()) {
+                if (driver.areTherProducts()) {
                     obtainProduct();
                 } else {
-                    System.out.println("It wasn't possible to find any users in the data base.");
+                    System.out.println("It wasn't possible to find any products in the data base");
                 }
                 break;
             case 6:
-
+                if (driver.areTherProducts()) {
+                    unsubscribeMagazine();
+                } else {
+                    System.out.println("It wasn't possible to find any products in the data base");
+                }
                 break;
             case 7:
-
+                if (driver.areTherProducts()) {
+                    startAReadingSesion();
+                } else {
+                    System.out.println("It wasn't possible to find any products in the data base");
+                }
                 break;
             case 8:
 
@@ -113,7 +118,7 @@ public class Main {
                             "4. Change a book or a magazine\n" +
                             "5. Purchase product\n" +
                             "6. Unsubscribe from a magazine\n" +
-                            "7. \n" +
+                            "7. Start a reading session\n" +
                             "8. \n" +
 
                             "9. EXIT.\n");
@@ -372,6 +377,30 @@ public class Main {
         productID = input.nextLine();
         System.out.println(driver.unsubscribeMagazine(userID, productID));
 
+    }
+
+    public void startAReadingSesion() {
+        String userID;
+        String productID;
+        char option = '.';
+        System.out.println("Please insert the user ID");
+        userID = input.nextLine();
+        System.out.println(driver.productsOfAUser(userID));
+        System.out.println("Please insert the product ID");
+        productID = input.nextLine();
+        if (driver.findProductByID(productID) != -1) {
+            do {
+                try {
+                    System.out.println(driver.startAReagindSession(productID, option, userID));
+                    option = input.nextLine().charAt(0);
+                } catch (StringIndexOutOfBoundsException e) {
+                    System.out.println("Please insert an option");
+                }
+
+            } while (option != 'B' && option != 'b');
+        } else {
+            System.out.println("Product was not found");
+        }
     }
 
 }

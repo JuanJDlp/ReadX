@@ -2,21 +2,20 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import MyHashMap.MyHashMap;
 import Utils.Utils;
 
 public abstract class AbstractUser {
     protected String ID;
     protected String name;
     protected Calendar dateOfEntering;
-    protected MyHashMap<String, BibliographicProduct> products;
+    protected ArrayList<BibliographicProduct> products;
     protected ArrayList<Recipt> recipts;
 
     public AbstractUser(String ID, String name, Calendar dateOfEntering) {
         this.ID = ID;
         this.name = name;
         this.dateOfEntering = dateOfEntering;
-        products = new MyHashMap<>();
+        products = new ArrayList<>();
         recipts = new ArrayList<>();
     }
 
@@ -44,7 +43,7 @@ public abstract class AbstractUser {
         this.name = name;
     }
 
-    public MyHashMap<String, BibliographicProduct> getProducts() {
+    public ArrayList<BibliographicProduct> getProducts() {
         return products;
     }
 
@@ -54,7 +53,11 @@ public abstract class AbstractUser {
 
     public String addProduct(BibliographicProduct product) {
         String msg = "";
-        products.put(product.getID(), product);
+        try {
+            products.add(product.clone());
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
         recipts.add(new Recipt(product.getValue()));
         if (product instanceof Book) {
             msg = "Product added to user " + name;
@@ -66,8 +69,8 @@ public abstract class AbstractUser {
 
     public int amountOfBook() {
         int counter = 0;
-        for (MyHashMap.Node<String, BibliographicProduct> entry : products) {
-            if (entry != null && entry.getValue() instanceof Book)
+        for (BibliographicProduct entry : products) {
+            if (entry != null && entry instanceof Book)
                 counter++;
         }
         return counter;
@@ -75,18 +78,52 @@ public abstract class AbstractUser {
 
     public int amountOfMagazines() {
         int counter = 0;
-        for (MyHashMap.Node<String, BibliographicProduct> entry : products) {
-            if (entry != null && entry.getValue() instanceof Magazine)
+        for (BibliographicProduct entry : products) {
+            if (entry != null && entry instanceof Magazine)
                 counter++;
         }
         return counter;
     }
 
+    public String productsOfAUser() {
+        String info = "";
+        for (BibliographicProduct entry : products) {
+            info += "Name: " + entry.getName() + "| ID:  " + entry.getID() + " " + "\n";
+        }
+        return info;
+    }
+
+    public boolean hasProduct(String ID) {
+        return getProductByID(ID) != null;
+    }
+
+    public int findProductByID(String ID) {
+        boolean found = false;
+        int position = -1;
+        for (int i = 0; i < products.size() && !found; i++)
+            if (products.get(i).getID().toLowerCase().equals(ID.toLowerCase())) {
+                found = true;
+                position = i;
+            }
+        return position;
+    }
+
+    public BibliographicProduct getProductByID(String ID) {
+        boolean found = false;
+        BibliographicProduct product = null;
+        for (int i = 0; i < products.size() && !found; i++)
+            if (products.get(i).getID().toLowerCase().equals(ID.toLowerCase())) {
+                found = true;
+                product = products.get(i);
+            }
+        return product;
+    }
+
     public String removeProduct(String productID) {
         String msg = "This user does not have this magazine";
-
-        if (products.containsKey(productID)) {
-            products.remove(ID);
+        BibliographicProduct product = products.get(findProductByID(productID));
+        if (products.contains(product)) {
+            products.remove(product);
             msg = "User " + name + " was unsubscribed to the magazine!";
         }
         return msg;
