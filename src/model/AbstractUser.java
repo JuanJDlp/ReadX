@@ -139,9 +139,9 @@ public abstract class AbstractUser {
      *         represents the number of
      *         books in the `car` list.
      */
-    public int amountOfBookInCart() {
+    public int amountOfBook(ArrayList<BibliographicProduct> array) {
         int counter = 0;
-        for (BibliographicProduct entry : car) {
+        for (BibliographicProduct entry : array) {
             if (entry != null && entry instanceof Book)
                 counter++;
         }
@@ -155,9 +155,9 @@ public abstract class AbstractUser {
      *         represents the number
      *         of magazines in the `car` list.
      */
-    public int amountOfMagazinesInCart() {
+    public int amountOfMagazines(ArrayList<BibliographicProduct> array) {
         int counter = 0;
-        for (BibliographicProduct entry : car) {
+        for (BibliographicProduct entry : array) {
             if (entry != null && entry instanceof Magazine)
                 counter++;
         }

@@ -601,10 +601,12 @@ public class Controller {
         }
 
         if (user instanceof Standar) {
-            if (((Standar) user).amountOfBook() >= 5 || ((Standar) user).amountOfBookInCart() >= 5) {
+            if (((Standar) user).amountOfBook(user.getProducts()) >= 5
+                    || ((Standar) user).amountOfBook(user.getCar()) >= 5) {
                 return "The user has already 5 books";
             }
-            if (((Standar) user).amountOfMagazines() >= 2 || ((Standar) user).amountOfMagazinesInCart() >= 2) {
+            if (((Standar) user).amountOfMagazines(user.getProducts()) >= 2
+                    || ((Standar) user).amountOfMagazines(user.getCar()) >= 2) {
                 return "The user is already subscribed to 2 magazines";
             }
         }
