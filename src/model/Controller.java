@@ -308,10 +308,10 @@ public class Controller {
         }
 
         if (user instanceof Standar) {
-            if (user.amountOfBook() >= 5) {
+            if (user.amountOfBook() >= 5 || user.amountOfBookInCart() >= 5) {
                 return "The user has already 5 books";
             }
-            if (user.amountOfMagazines() >= 2) {
+            if (user.amountOfMagazines() >= 2 || user.amountOfMagazinesInCart() >= 2) {
                 return "The user is already subscribed to 2 magazines";
             }
         }

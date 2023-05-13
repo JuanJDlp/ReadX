@@ -113,6 +113,24 @@ public abstract class AbstractUser {
         return counter;
     }
 
+    public int amountOfBookInCart() {
+        int counter = 0;
+        for (BibliographicProduct entry : car) {
+            if (entry != null && entry instanceof Book)
+                counter++;
+        }
+        return counter;
+    }
+
+    public int amountOfMagazinesInCart() {
+        int counter = 0;
+        for (BibliographicProduct entry : car) {
+            if (entry != null && entry instanceof Magazine)
+                counter++;
+        }
+        return counter;
+    }
+
     public String productsOfAUser() {
         String info = "";
         for (BibliographicProduct entry : products) {
