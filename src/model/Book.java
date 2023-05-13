@@ -46,6 +46,12 @@ public class Book extends BibliographicProduct {
         this.shortReview = shortReview;
     }
 
+    /**
+     * The function generates a random 3-character hexadecimal ID.
+     * 
+     * @return The method is returning a randomly generated hexadecimal string of
+     *         length 3.
+     */
     public String idGenerator() {
         Random random = new Random();
         String hexadecimal = "ABCDEF0123456789";
@@ -56,6 +62,9 @@ public class Book extends BibliographicProduct {
         return hexId;
     }
 
+    /**
+     * The function re-creates the ID of an object using an ID generator.
+     */
     public void reCreateID() {
         super.ID = idGenerator();
     }

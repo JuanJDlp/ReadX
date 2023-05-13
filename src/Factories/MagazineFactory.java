@@ -13,6 +13,31 @@ public class MagazineFactory implements IAbstractBibliograpgicProductFractory {
 
     }
 
+    /**
+     * This function creates a new Magazine object with the given parameters and
+     * returns it.
+     * 
+     * @param name           The name of the magazine being created.
+     * @param numberOfPages  an integer representing the number of pages in the
+     *                       magazine.
+     * @param pubicationDate A Calendar object representing the date of publication
+     *                       of the magazine.
+     * @param URL            The URL parameter is a String that represents the web
+     *                       address or link to the online
+     *                       version of the magazine.
+     * @param value          The value parameter in the createProduct method
+     *                       represents the monetary value of the
+     *                       magazine being created.
+     * @param extraArgument  The "extraArgument" parameter is a String that can be
+     *                       used to pass any
+     *                       additional information or data that may be required to
+     *                       create the product. It is not used in this
+     *                       specific implementation of the "createProduct" method.
+     * @param category_genre An integer value representing the category or genre of
+     *                       the magazine. It can be
+     *                       1 for Varieties, 2 for Design, or 3 for Scientific.
+     * @return A Magazine object is being returned.
+     */
     @Override
     public BibliographicProduct createProduct(
             String name,

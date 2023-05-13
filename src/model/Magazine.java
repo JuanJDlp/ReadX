@@ -40,6 +40,13 @@ public class Magazine extends BibliographicProduct {
         this.frecuencyOfIssuance = frecuencyOfIssuance;
     }
 
+    /**
+     * The function generates a random 3-character alphanumeric ID.
+     * 
+     * @return The method is returning a randomly generated string of three
+     *         characters consisting of digits
+     *         and uppercase letters.
+     */
     public String idGenerator() {
         Random random = new Random();
         String characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -52,6 +59,9 @@ public class Magazine extends BibliographicProduct {
         return idBuilder.toString();
     }
 
+    /**
+     * The function re-creates the ID of an object using an ID generator.
+     */
     public void reCreateID() {
         super.ID = idGenerator();
     }

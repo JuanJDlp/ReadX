@@ -57,6 +57,17 @@ public abstract class AbstractUser {
         return car;
     }
 
+    /**
+     * The function adds all products in a shopping cart to a list of products,
+     * creates a receipt object
+     * with the shopping cart items, adds the receipt to a list of receipts, clears
+     * the shopping cart, and
+     * returns the content of the receipt.
+     * 
+     * @return The method is returning the content of the receipt generated for the
+     *         items in the shopping
+     *         cart.
+     */
     public String checkOutShoppingCart() {
         products.addAll(car);
         Recipt recipt = new Recipt(car);
@@ -65,6 +76,21 @@ public abstract class AbstractUser {
         return recipt.getContent();
     }
 
+    /**
+     * The function adds a bibliographic product to a user's cart and returns a
+     * message indicating whether
+     * the product was successfully added or if it was already in the cart.
+     * 
+     * @param product a BibliographicProduct object that represents the product
+     *                being added to the user's
+     *                car. It could be either a Book or a Magazine object.
+     * @return The method is returning a message indicating whether the product was
+     *         successfully added to
+     *         the user's cart or not. The message varies depending on the type of
+     *         product being added. If the
+     *         product is already in the cart, the message will indicate that the
+     *         user has already added it.
+     */
     public String addProductToCar(BibliographicProduct product) {
         String msg = "The user alredy added this product to his car";
         if (!isProductInCar(product.getID())) {
@@ -83,6 +109,17 @@ public abstract class AbstractUser {
         return msg;
     }
 
+    /**
+     * This function checks if a product with a given ID is present in the shopping
+     * cart.
+     * 
+     * @param ID The ID parameter is a String representing the unique identifier of
+     *           a bibliographic
+     *           product.
+     * @return The method is returning a boolean value indicating whether a product
+     *         with the given ID is
+     *         present in the "car" list or not.
+     */
     public boolean isProductInCar(String ID) {
         boolean found = false;
         BibliographicProduct product = null;
@@ -95,24 +132,13 @@ public abstract class AbstractUser {
         return product != null;
     }
 
-    public int amountOfBook() {
-        int counter = 0;
-        for (BibliographicProduct entry : products) {
-            if (entry != null && entry instanceof Book)
-                counter++;
-        }
-        return counter;
-    }
-
-    public int amountOfMagazines() {
-        int counter = 0;
-        for (BibliographicProduct entry : products) {
-            if (entry != null && entry instanceof Magazine)
-                counter++;
-        }
-        return counter;
-    }
-
+    /**
+     * The function counts the number of books in a shopping cart.
+     * 
+     * @return The method `amountOfBookInCart()` returns an integer value which
+     *         represents the number of
+     *         books in the `car` list.
+     */
     public int amountOfBookInCart() {
         int counter = 0;
         for (BibliographicProduct entry : car) {
@@ -122,6 +148,13 @@ public abstract class AbstractUser {
         return counter;
     }
 
+    /**
+     * This function counts the number of magazines in a shopping cart.
+     * 
+     * @return The method `amountOfMagazinesInCart()` returns an integer value which
+     *         represents the number
+     *         of magazines in the `car` list.
+     */
     public int amountOfMagazinesInCart() {
         int counter = 0;
         for (BibliographicProduct entry : car) {
@@ -131,6 +164,14 @@ public abstract class AbstractUser {
         return counter;
     }
 
+    /**
+     * The function returns a string containing the names and IDs of all
+     * bibliographic products in a list.
+     * 
+     * @return The method `productsOfAUser()` is returning a string containing
+     *         information about the
+     *         products of a user, including the name and ID of each product.
+     */
     public String productsOfAUser() {
         String info = "";
         for (BibliographicProduct entry : products) {
@@ -139,10 +180,30 @@ public abstract class AbstractUser {
         return info;
     }
 
+    /**
+     * The function checks if the user has a product with a given ID .
+     * 
+     * @param ID ID is a String parameter representing the unique identifier of a
+     *           product.
+     * @return A boolean value indicating whether a product with the given ID exists
+     *         in the system or not.
+     */
     public boolean hasProduct(String ID) {
         return getProductByID(ID) != null;
     }
 
+    /**
+     * This Java function searches for a product in a list by its ID and returns its
+     * position.
+     * 
+     * @param ID The ID parameter is a String representing the unique identifier of
+     *           a product that we want
+     *           to find in a list of products.
+     * @return The method is returning an integer value which represents the
+     *         position of the product in the
+     *         list of products with the given ID. If the product is not found, the
+     *         method returns -1.
+     */
     public int findProductByID(String ID) {
         boolean found = false;
         int position = -1;
@@ -154,6 +215,19 @@ public abstract class AbstractUser {
         return position;
     }
 
+    /**
+     * This function searches for a BibliographicProduct object in a list of
+     * products by its ID and returns
+     * it.
+     * 
+     * @param ID The ID parameter is a String that represents the unique identifier
+     *           of a bibliographic
+     *           product. The method searches for a product with the matching ID in
+     *           a list of products and returns
+     *           the product if found.
+     * @return The method is returning a BibliographicProduct object with the
+     *         specified ID.
+     */
     public BibliographicProduct getProductByID(String ID) {
         boolean found = false;
         BibliographicProduct product = null;
@@ -165,6 +239,21 @@ public abstract class AbstractUser {
         return product;
     }
 
+    /**
+     * The function removes a magazine from a user's subscription list if they have
+     * it.
+     * 
+     * @param productID a String representing the ID of the product (magazine) that
+     *                  the user wants to
+     *                  unsubscribe from.
+     * @return The method is returning a message (String) indicating whether the
+     *         user was unsubscribed from
+     *         the magazine or not. If the user does not have the magazine, the
+     *         message will be "This user does not
+     *         have this magazine". If the user has the magazine and it is
+     *         successfully removed, the message will
+     *         be "User [name] was unsubscribed to the magazine!".
+     */
     public String removeProduct(String productID) {
         String msg = "This user does not have this magazine";
         BibliographicProduct product = getProductByID(productID);

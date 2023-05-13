@@ -174,6 +174,10 @@ public class Main {
         return option;
     }
 
+    /**
+     * This function registers a user by taking their ID, name, and type of user as
+     * input and sends them to the driver to be created and stored
+     */
     public void registerUser() {
         String ID;
         String name;
@@ -196,6 +200,12 @@ public class Main {
         }
     }
 
+    /**
+     * This function allows a user to register a bibliographic product by inputting
+     * its name, number of
+     * pages, publication date, and type (book or magazine). The it uses 2 helper
+     * functions createBook and createMagazine
+     */
     public void registerBibliographicProduct() {
         int bookOrMagazine;
         String productName;
@@ -242,6 +252,23 @@ public class Main {
 
     }
 
+    /**
+     * This function creates a book or magazine product by taking user inputs for
+     * various attributes such
+     * as URL, value, review, and genre.
+     * 
+     * @param productName     A string representing the name of the book.
+     * @param numberOfPages   An integer representing the number of pages in the
+     *                        book.
+     * @param publicationDate A Calendar object representing the date of publication
+     *                        of the book.
+     * @param bookOrMagazine  This parameter is an integer that specifies whether
+     *                        the product being created
+     *                        is a book or a magazine. A value of 1 indicates a
+     *                        book, while a value of 2 indicates a magazine.
+     * @return The method is returning a String, which represents if it was possible
+     *         or not to create the product
+     */
     private String createBook(String productName, int numberOfPages,
             Calendar publicationDate,
             int bookOrMagazine) {
@@ -273,6 +300,23 @@ public class Main {
                         review, genre, bookOrMagazine));
     }
 
+    /**
+     * This function creates a magazine by prompting the user for various
+     * inputs such as the magazine
+     * cover URL, subscription value, frequency of issuance, and category.
+     * 
+     * @param productName     A String representing the name of the magazine being
+     *                        created.
+     * @param numberOfPages   The number of pages in the magazine.
+     * @param publicationDate A Calendar object representing the date of publication
+     *                        of the magazine.
+     * @param bookOrMagazine  An integer value indicating whether the product being
+     *                        created is a book or a
+     *                        magazine. A value of 1 indicates a book, while a value
+     *                        of 2 indicates a magazine.
+     * @return The method is returning a String, which represents the output of the
+     *         opperation
+     */
     private String craeteMagazine(String productName, int numberOfPages,
             Calendar publicationDate,
             int bookOrMagazine) {
@@ -302,6 +346,11 @@ public class Main {
                         frecuencyOfIssuance, category, bookOrMagazine));
     }
 
+    /**
+     * This Java prompts the user to input a product name and ID, displays
+     * similar product names,
+     * and deletes the product with the specified ID.
+     */
     public void deleteProduct() {
         String productsName;
         String productID;
@@ -314,6 +363,11 @@ public class Main {
         System.out.println(driver.deleteProduct(productID));
     }
 
+    /**
+     * This function allows the user to change the attributes of a product by
+     * selecting the product and the
+     * attribute to be changed, and then entering a new value for that attribute.
+     */
     public void changeProduct() {
         String productsName;
         String productID;
@@ -344,6 +398,12 @@ public class Main {
         System.out.println(msg);
     }
 
+    /**
+     * This function allows a user to purchase products by inputting the user ID and
+     * the
+     * product ID, and can add. The user has the possibility to buy multiple
+     * products at once.
+     */
     public void obtainProduct() {
         String userID;
         String productID;
@@ -376,6 +436,12 @@ public class Main {
 
     }
 
+    /**
+     * This function allows a user to unsubscribe from a magazine by inputting their
+     * user ID and the ID of
+     * the magazine they want to unsubscribe from.
+     */
+
     public void unsubscribeMagazine() {
         String userID;
         String productID;
@@ -394,6 +460,13 @@ public class Main {
 
     }
 
+    /**
+     * This function starts a reading session for a user by prompting for their ID
+     * and a product ID, and
+     * then allowing them to interact with the product through a series of options
+     * until they choose to
+     * exit.
+     */
     public void startAReadingSesion() {
         String userID;
         String productID;

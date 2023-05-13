@@ -125,6 +125,19 @@ public abstract class BibliographicProduct implements Cloneable, INavigable {
         return (BibliographicProduct) super.clone();
     }
 
+    /**
+     * The function increments the current page being read and updates the number of
+     * pages read and last
+     * page read if necessary, and resets the current page being read if it exceeds
+     * the total number of
+     * pages. This methods is used for the readin session.
+     * 
+     * @return The method `nextPage()` returns an integer value, which is the
+     *         current page being read after
+     *         the method updates the `currentPageBeingRead`, `NumberLastPageRead`,
+     *         and `numberOfPagesRead`
+     *         variables.
+     */
     public int nextPage() {
 
         this.currentPageBeingRead++;
@@ -141,6 +154,16 @@ public abstract class BibliographicProduct implements Cloneable, INavigable {
         return this.currentPageBeingRead;
     }
 
+    /**
+     * This function decreases the current page being read by one and returns the
+     * new value, ensuring that
+     * the value does not go below zero.
+     * It is used for the readin session.
+     * 
+     * @return The method `previousPage()` returns an integer value which represents
+     *         the current page being
+     *         read after decrementing it by 1.
+     */
     public int previousPage() {
         this.currentPageBeingRead--;
         if (this.currentPageBeingRead < 0) {
@@ -149,6 +172,13 @@ public abstract class BibliographicProduct implements Cloneable, INavigable {
         return this.currentPageBeingRead;
     }
 
+    /**
+     * The function returns a string containing labeled attributes of a prodict.
+     * 
+     * @return A string containing the labeled attributes of an object, including
+     *         its name, number of
+     *         pages, publication date, URL, and value.
+     */
     public String labbeldAttributes() {
         return "\n1.Name: " + name + "\n2.Number of pages: " + numberOfPages + "\n3.Publication date:"
                 + Utils.format(publicationDate.getTime()) + "\n4.URL:" + URL + "\n5.Value:" + value;
