@@ -5,7 +5,7 @@ import java.util.Calendar;
 import Interfaces.INavigable;
 import Utils.Utils;
 
-public abstract class BibliographicProduct implements Cloneable, INavigable {
+public abstract class BibliographicProduct implements Cloneable, INavigable, Comparable<BibliographicProduct> {
     protected String ID;
     protected String name;
     protected int numberOfPages;
@@ -182,6 +182,11 @@ public abstract class BibliographicProduct implements Cloneable, INavigable {
     public String labbeldAttributes() {
         return "\n1.Name: " + name + "\n2.Number of pages: " + numberOfPages + "\n3.Publication date:"
                 + Utils.format(publicationDate.getTime()) + "\n4.URL:" + URL + "\n5.Value:" + value;
+    }
+
+    @Override
+    public int compareTo(BibliographicProduct product) {
+        return this.getPublicationDate().compareTo(product.getPublicationDate());
     }
 
     public String toString() {

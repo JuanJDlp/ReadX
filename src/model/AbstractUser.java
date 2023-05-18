@@ -135,7 +135,7 @@ public abstract class AbstractUser {
     /**
      * The function counts the number of books in a shopping cart.
      * 
-     * @return The method `amountOfBookInCart()` returns an integer value which
+     * @return The method `amountOfBook` returns an integer value which
      *         represents the number of
      *         books in the `car` list.
      */
@@ -151,7 +151,7 @@ public abstract class AbstractUser {
     /**
      * This function counts the number of magazines in a shopping cart.
      * 
-     * @return The method `amountOfMagazinesInCart()` returns an integer value which
+     * @return The method `amountOfMagazines` returns an integer value which
      *         represents the number
      *         of magazines in the `car` list.
      */
@@ -229,14 +229,10 @@ public abstract class AbstractUser {
      *         specified ID.
      */
     public BibliographicProduct getProductByID(String ID) {
-        boolean found = false;
-        BibliographicProduct product = null;
-        for (int i = 0; i < products.size() && !found; i++)
-            if (products.get(i).getID().toLowerCase().equals(ID.toLowerCase())) {
-                found = true;
-                product = products.get(i);
-            }
-        return product;
+        if (findProductByID(ID) != -1) {
+            return products.get(findProductByID(ID));
+        }
+        return null;
     }
 
     /**
