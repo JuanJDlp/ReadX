@@ -16,14 +16,6 @@ public class Libray implements INavigable {
         library.add(createPage());
     }
 
-    public ArrayList<BibliographicProduct[][]> getLibrary() {
-        return library;
-    }
-
-    public int size() {
-        return library.size();
-    }
-
     public void addProduct(BibliographicProduct product) {
         BibliographicProduct[][] matrix = library.get(library.size() - 1);
         if (isMatrixFull(matrix)) {
@@ -59,19 +51,17 @@ public class Libray implements INavigable {
         return true;
     }
 
-    public boolean deleteProduct(BibliographicProduct product) {
-        boolean isFound = false;
-        for (int i = 0; i < library.size() && !isFound; i++) {
-            for (int j = 0; j < ROWS && !isFound; j++) {
-                for (int k = 0; k < COLUMNS && !isFound; k++) {
+    public void deleteProduct(BibliographicProduct product) {
+        for (int i = 0; i < library.size(); i++) {
+            for (int j = 0; j < ROWS; j++) {
+                for (int k = 0; k < COLUMNS; k++) {
                     if (library.get(i)[j][k] == product) {
-                        isFound = true;
                         library.get(i)[j][k] = null;
                     }
                 }
             }
         }
-        return isFound;
+
     }
 
     public BibliographicProduct getProduct(String productID) {
@@ -101,12 +91,11 @@ public class Libray implements INavigable {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 if (matrix[i][j] != null) {
-                    info += "| " + matrix[i][j].getID() + " | ";
+                    info += matrix[i][j].toString() + "\n";
                 } else {
-                    info += "| --- | ";
+                    info += "----\n";
                 }
             }
-            info += "\n";
         }
         return info;
     }
@@ -158,27 +147,6 @@ public class Libray implements INavigable {
         for (int i = 0; i < ROWS; i++)
             for (int j = 0; j < COLUMNS; j++)
                 mat[i][j] = temp.get(k++);
-    }
-
-    public void addAll(ArrayList<BibliographicProduct> products) {
-        for (BibliographicProduct product : products) {
-            addProduct(product);
-        }
-    }
-
-    public int amountOfProductsInAMatrix(int position) {
-        int counter = 0;
-        BibliographicProduct[][] matrix = library.get(position);
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLUMNS; j++) {
-                if (matrix[i][j] != null) {
-                    counter++;
-                }
-
-            }
-
-        }
-        return counter;
     }
 
     @Override

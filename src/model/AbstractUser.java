@@ -8,7 +8,7 @@ public abstract class AbstractUser {
     protected String ID;
     protected String name;
     protected Calendar dateOfEntering;
-    protected Libray library;
+    protected ArrayList<BibliographicProduct> products;
     protected ArrayList<Recipt> recipts;
     protected ArrayList<BibliographicProduct> car;
 
@@ -16,7 +16,7 @@ public abstract class AbstractUser {
         this.ID = ID;
         this.name = name;
         this.dateOfEntering = dateOfEntering;
-        library = new Libray();
+        products = new ArrayList<>();
         recipts = new ArrayList<>();
         car = new ArrayList<>();
     }
@@ -45,8 +45,8 @@ public abstract class AbstractUser {
         this.name = name;
     }
 
-    public Libray getLibrary() {
-        return library;
+    public ArrayList<BibliographicProduct> getProducts() {
+        return products;
     }
 
     public ArrayList<Recipt> getRecipts() {
@@ -69,7 +69,7 @@ public abstract class AbstractUser {
      *         cart.
      */
     public String checkOutShoppingCart() {
-        library.addAll(car);
+        products.addAll(car);
         Recipt recipt = new Recipt(car);
         recipts.add(recipt);
         car.clear();
@@ -174,8 +174,8 @@ public abstract class AbstractUser {
      */
     public String productsOfAUser() {
         String info = "";
-        for (int i = 0; i < library.size(); i++) {
-            info += library.showMatrix(i);
+        for (BibliographicProduct entry : products) {
+            info += "Name: " + entry.getName() + "| ID:  " + entry.getID() + " " + "\n";
         }
         return info;
     }
@@ -193,6 +193,29 @@ public abstract class AbstractUser {
     }
 
     /**
+     * This Java function searches for a product in a list by its ID and returns its
+     * position.
+     * 
+     * @param ID The ID parameter is a String representing the unique identifier of
+     *           a product that we want
+     *           to find in a list of products.
+     * @return The method is returning an integer value which represents the
+     *         position of the product in the
+     *         list of products with the given ID. If the product is not found, the
+     *         method returns -1.
+     */
+    public int findProductByID(String ID) {
+        boolean found = false;
+        int position = -1;
+        for (int i = 0; i < products.size() && !found; i++)
+            if (products.get(i).getID().toLowerCase().equals(ID.toLowerCase())) {
+                found = true;
+                position = i;
+            }
+        return position;
+    }
+
+    /**
      * This function searches for a BibliographicProduct object in a list of
      * products by its ID and returns
      * it.
@@ -206,7 +229,10 @@ public abstract class AbstractUser {
      *         specified ID.
      */
     public BibliographicProduct getProductByID(String ID) {
-        return library.getProduct(ID);
+        if (findProductByID(ID) != -1) {
+            return products.get(findProductByID(ID));
+        }
+        return null;
     }
 
     /**
@@ -227,8 +253,8 @@ public abstract class AbstractUser {
     public String removeProduct(String productID) {
         String msg = "This user does not have this magazine";
         BibliographicProduct product = getProductByID(productID);
-        Boolean wasDeleted = library.deleteProduct(product);
-        if (wasDeleted) {
+        if (products.contains(product) && product != null) {
+            products.remove(product);
             msg = "User " + name + " was unsubscribed to the magazine!";
         }
         return msg;
@@ -251,7 +277,7 @@ public abstract class AbstractUser {
     public String addProduct(BibliographicProduct product) {
         String msg = "";
         try {
-            library.addProduct(product.clone());
+            products.add(product.clone());
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
