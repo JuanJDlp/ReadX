@@ -16,6 +16,14 @@ public class Libray implements INavigable {
         library.add(createPage());
     }
 
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
     public void addProduct(BibliographicProduct product) {
         BibliographicProduct[][] matrix = library.get(library.size() - 1);
         if (isMatrixFull(matrix)) {
@@ -183,21 +191,25 @@ public class Libray implements INavigable {
 
     }
 
+    public BibliographicProduct getProductByCordinate(int x, int y) {
+        return library.get(currentPage)[x][y];
+    }
+
     @Override
     public int nextPage() {
-        currentPage++;
-        if (currentPage > library.size()) {
-            currentPage = 0;
+        this.currentPage++;
+        if (this.currentPage == library.size()) {
+            this.currentPage = 0;
         }
-        return currentPage;
+        return this.currentPage;
     }
 
     @Override
     public int previousPage() {
-        currentPage--;
-        if (currentPage < 0) {
-            currentPage = 0;
+        this.currentPage--;
+        if (this.currentPage <= 0) {
+            this.currentPage = 0;
         }
-        return currentPage;
+        return this.currentPage;
     }
 }

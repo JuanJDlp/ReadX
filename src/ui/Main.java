@@ -82,7 +82,7 @@ public class Main {
                 break;
             case 7:
                 if (driver.areTherProducts()) {
-                    startAReadingSesion();
+                    startAReadingMatrix();
                 } else {
                     System.out.println("It wasn't possible to find any products in the data base");
                 }
@@ -115,10 +115,10 @@ public class Main {
                             "1. Register user \n" +
                             "2. Add a book or a magazine\n" +
                             "3. Delete book or magazine \n" +
-                            "4. Change a book or a magazine\n" +
+                            "4. Modify a book or a magazine\n" +
                             "5. Purchase product\n" +
                             "6. Unsubscribe from a magazine\n" +
-                            "7. Start a reading session\n" +
+                            "7. Open a user's library\n" +
                             "8. \n" +
 
                             "9. EXIT.\n");
@@ -489,6 +489,21 @@ public class Main {
         } else {
             System.out.println("Product was not found");
         }
+    }
+
+    public void startAReadingMatrix() {
+        String userID;
+        String option = "....";
+        System.out.println("Please insert the user ID");
+        userID = input.nextLine();
+        do {
+            try {
+                System.out.println(driver.startMatrixReadingSession(option, userID));
+                option = input.nextLine();
+            } catch (StringIndexOutOfBoundsException e) {
+                System.out.println("Please insert an option");
+            }
+        } while (option.charAt(0) != 'e' && option.charAt(0) != 'E');
     }
 
 }

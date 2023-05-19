@@ -593,8 +593,9 @@ public class Controller {
      *         transaccion was completted.
      */
     public String addProductToUser(String userID, String productID) {
-        AbstractUser user = users.get(userID);
+        AbstractUser user = users.get(userID.toLowerCase());
         BibliographicProduct product = getProductByID(productID);
+        String msg = "";
 
         if (user == null || product == null) {
             return "Either the user or the product ID was not found";
@@ -603,20 +604,20 @@ public class Controller {
         if (user instanceof Standar) {
             if (((Standar) user).getLibrary().amountOfBook() >= 5
                     || ((Standar) user).amountOfBook(user.getCart()) >= 5) {
-                return "The user has already 5 books";
+                msg = "The user has already 5 books";
             }
             if (((Standar) user).getLibrary().amountOfMagazines() >= 2
                     || ((Standar) user).amountOfMagazines(user.getCart()) >= 2) {
-                return "The user is already subscribed to 2 magazines";
+                msg = "The user is already subscribed to 2 magazines";
             }
         }
 
         if (user.hasProduct(productID)) {
-            return "This user already has this product";
+            msg = "This user already has this product";
         }
 
         product.setCopiesSold(product.getCopiesSold() + 1);
-        String msg = user.addProductToCar(product);
+        msg = user.addProductToCar(product);
         return msg;
     }
 
@@ -695,31 +696,32 @@ public class Controller {
      */
     public String startAReagindSession(String productID, char option, String userID) {
         String reading = "";
-        BibliographicProduct userProduct = users.get(userID).getProductByID(productID);
         AbstractUser user = users.get(userID);
+        BibliographicProduct userProduct = user.getProductByID(productID);
         int currentPage = 0;
 
         if (userProduct != null && user.hasProduct(productID)) {
+            switch (Character.toUpperCase(option)) {
+                case 'A':
+                    currentPage = userProduct.previousPage();
+                    break;
+                case 'S':
+                    currentPage = userProduct.nextPage();
+                    break;
+                case 'B':
+                    BibliographicProduct product = products.get(findProductByID(productID));
+                    product.setNumberOfPagesRead(product.getNumberOfPagesRead() + userProduct.getNumberOfPagesRead());
+                    break;
+                default:
 
-            if (option == 'a' || option == 'A') {
-
-                currentPage = userProduct.previousPage();
-
-            } else if (option == 's' || option == 'S') {
-
-                currentPage = userProduct.nextPage();
-
-            } else if (option == 'B' || option == 'b') {
-                BibliographicProduct product = products.get(findProductByID(productID));
-                product.setNumberOfPagesRead(product.getNumberOfPagesRead() + userProduct.getNumberOfPagesRead());
             }
 
             reading = "\n\tReading session in progress...\n" +
                     "\nReading: " + userProduct.getName() +
                     "\nReagind page # " + userProduct.getCurrentPageBeingRead() + " of "
                     + userProduct.getNumberOfPages() +
-                    "\n\nPress 'a' to go to the prevoius page" +
-                    "\nPress 's' to go to the next page" +
+                    "\n\nPress 'A' to go to the prevoius page" +
+                    "\nPress 'S' to go to the next page" +
                     "\nPress 'B' to go back to the library" + "\n\n" +
                     showPublicity(currentPage, user);
         } else {
@@ -727,6 +729,48 @@ public class Controller {
         }
         return reading;
 
+    }
+
+    public String startMatrixReadingSession(String option, String userID) {
+        AbstractUser user = users.get(userID);
+        if (user == null) {
+            return "User not found";
+        }
+        String readingMatrix = user.getName() + "' library\n";
+        int currentPage = user.getLibrary().getCurrentPage();
+
+        switch (option.toUpperCase()) {
+            case "A":
+                currentPage = user.getLibrary().previousPage();
+                break;
+            case "S":
+                currentPage = user.getLibrary().nextPage();
+                break;
+            case "E":
+                break;
+            default:
+                // searchProduct(user, option);
+                break;
+        }
+
+        readingMatrix += user.getLibrary().showMatrix(currentPage);
+        readingMatrix += "\nINSERT THE Y,X CORDINATE OR THE PRODUC'S CODE TO START A READING SESION" +
+                "\nPress A to go the previous page" +
+                "\nPress S to go to the next page" +
+                "\nPress E to exit";
+
+        return readingMatrix;
+    }
+
+    public BibliographicProduct searchProduct(AbstractUser user, String word) {
+
+        if (word.length() > 2) {
+            return user.getProductByID(word.toLowerCase());
+        } else {
+            int x = Character.getNumericValue(word.charAt(0));
+            int y = Character.getNumericValue(word.charAt(2));
+            return user.getLibrary().getProductByCordinate(x, y);
+        }
     }
 
     /**

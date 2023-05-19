@@ -83,10 +83,10 @@ public class initProgram {
     public static void initProductsOfAnUser(Controller driver) {
         int h = 0;
         for (MyHashMap.Node<String, AbstractUser> entry : driver.getUsers()) {
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 26; i++) {
                 entry.getValue().addProduct(driver.getProducts().get(i + h));
             }
-            h = h + 5;
+            h = h + 25;
         }
     }
 }
