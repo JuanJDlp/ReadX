@@ -51,17 +51,33 @@ public class Libray implements INavigable {
         return true;
     }
 
-    public void deleteProduct(BibliographicProduct product) {
-        for (int i = 0; i < library.size(); i++) {
-            for (int j = 0; j < ROWS; j++) {
-                for (int k = 0; k < COLUMNS; k++) {
+    public boolean deleteProduct(BibliographicProduct product) {
+        boolean found = false;
+        for (int i = 0; i < library.size() && !found; i++) {
+            for (int j = 0; j < ROWS && !found; j++) {
+                for (int k = 0; k < COLUMNS && !found; k++) {
                     if (library.get(i)[j][k] == product) {
                         library.get(i)[j][k] = null;
+                        found = true;
                     }
                 }
             }
         }
+        return found;
 
+    }
+
+    public int sizeOfAMatrix(int position) {
+        int counter = 0;
+        BibliographicProduct[][] mat = library.get(position);
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLUMNS; j++) {
+                if (mat[i][j] != null) {
+                    counter++;
+                }
+            }
+        }
+        return counter;
     }
 
     public BibliographicProduct getProduct(String productID) {
@@ -86,16 +102,23 @@ public class Libray implements INavigable {
     }
 
     public String showMatrix(int currentPage) {
-        String info = "";
+        String info = "| Y/X | ";
+
+        for (int i = 0; i < COLUMNS; i++) {
+            info += "|  " + i + "  | ";
+        }
+        info += "\n";
         BibliographicProduct[][] matrix = library.get(currentPage);
         for (int i = 0; i < ROWS; i++) {
+            info += "|  " + i + "  | ";
             for (int j = 0; j < COLUMNS; j++) {
                 if (matrix[i][j] != null) {
-                    info += matrix[i][j].toString() + "\n";
+                    info += "| " + matrix[i][j].getID() + " | ";
                 } else {
-                    info += "----\n";
+                    info += "| --- |" + " ";
                 }
             }
+            info += "\n";
         }
         return info;
     }
@@ -147,6 +170,17 @@ public class Libray implements INavigable {
         for (int i = 0; i < ROWS; i++)
             for (int j = 0; j < COLUMNS; j++)
                 mat[i][j] = temp.get(k++);
+    }
+
+    public int size() {
+        return library.size();
+    }
+
+    public void addAll(ArrayList<BibliographicProduct> array) {
+        for (int i = 0; i < array.size(); i++) {
+            addProduct(array.get(i));
+        }
+
     }
 
     @Override

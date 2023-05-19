@@ -94,7 +94,7 @@ class UserTests {
         driver.addProduct(book);
         driver.addProductToUser(user.getID(), book.getID());
         driver.checkOutShoppingCart(user.getID());
-        Assertions.assertTrue(user.getProducts().size() == 1);
+        Assertions.assertTrue(user.getLibrary().sizeOfAMatrix(0) == 1);
         Assertions.assertTrue(user.getRecipts().size() == 1);
     }
 
@@ -213,7 +213,7 @@ class UserTests {
         driver.addProduct(book1);
 
         Assertions.assertEquals("The user has already 5 books", driver.addProductToUser(user.getID(), "7"));
-        Assertions.assertTrue(user.getProducts().size() == 5);
+        Assertions.assertTrue(user.getLibrary().sizeOfAMatrix(0) == 5);
     }
 
     @Test
@@ -245,7 +245,7 @@ class UserTests {
         driver.addProduct(magazine);
         Assertions.assertEquals("The user is already subscribed to 2 magazines",
                 driver.addProductToUser(user.getID(), "7"));
-        Assertions.assertTrue(user.getProducts().size() == 2);
+        Assertions.assertTrue(user.getLibrary().sizeOfAMatrix(0) == 2);
     }
 
     @Test
