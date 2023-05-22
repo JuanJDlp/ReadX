@@ -59,15 +59,18 @@ public class Libray implements INavigable {
         return true;
     }
 
-    public boolean deleteProduct(BibliographicProduct product) {
+    public boolean deleteProduct(String productID) {
         boolean found = false;
         for (int i = 0; i < library.size() && !found; i++) {
             for (int j = 0; j < ROWS && !found; j++) {
                 for (int k = 0; k < COLUMNS && !found; k++) {
-                    if (library.get(i)[j][k] == product) {
-                        library.get(i)[j][k] = null;
-                        found = true;
+                    if (library.get(i)[j][k] != null) {
+                        if (library.get(i)[j][k].getID().toLowerCase().equalsIgnoreCase(productID)) {
+                            library.get(i)[j][k] = null;
+                            found = true;
+                        }
                     }
+
                 }
             }
         }

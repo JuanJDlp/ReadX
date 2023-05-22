@@ -214,8 +214,8 @@ public class Main {
         do {
 
             System.out.println("\n\tWould you like to: " +
-                    "\n1.Buy a book" +
-                    "\n2.Subscribe to a magazine");
+                    "\n1.Register a book" +
+                    "\n2.Register a magazine");
             bookOrMagazine = validateIntegerInput();
         } while (bookOrMagazine < 1 || bookOrMagazine > 2);
 
@@ -486,18 +486,20 @@ public class Main {
         String option = "....";
         System.out.println("Please insert the user ID");
         userID = input.nextLine();
-        if (driver.getUsers().get(userID) != null) {
-            do {
-                try {
+        if (driver.getUsers().get(userID.toLowerCase()) != null) {
+            try {
+                do {
                     System.out.println(driver.startMatrixReadingSession(option, userID));
                     option = input.nextLine();
                     if (isTheUserTryingToStartAreadingSession(option, userID)) {
                         startAReadingSesion(userID, option);
+                        option = "...";
                     }
-                } catch (StringIndexOutOfBoundsException e) {
-                    System.out.println("Please insert an option");
-                }
-            } while (option.charAt(0) != 'e' && option.charAt(0) != 'E');
+
+                } while (option.charAt(0) != 'e' && option.charAt(0) != 'E');
+            } catch (StringIndexOutOfBoundsException e) {
+                System.out.println("Please insert an option");
+            }
         } else {
             System.out.println("User not found");
         }

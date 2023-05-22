@@ -226,8 +226,7 @@ public abstract class AbstractUser {
      */
     public String removeProduct(String productID) {
         String msg = "This user does not have this magazine";
-        BibliographicProduct product = getProductByID(productID);
-        Boolean wasDeleted = library.deleteProduct(product);
+        Boolean wasDeleted = library.deleteProduct(productID);
         if (wasDeleted) {
             msg = "User " + name + " was unsubscribed to the magazine!";
         }

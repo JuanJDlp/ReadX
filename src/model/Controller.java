@@ -76,7 +76,7 @@ public class Controller {
     public boolean addUser(AbstractUser user) {
         boolean wasAdded = false;
         if (!users.containsKey(user.getID())) {
-            users.put(user.getID(), user);
+            users.put(user.getID().toLowerCase(), user);
             wasAdded = true;
         }
         return wasAdded;
@@ -98,7 +98,7 @@ public class Controller {
      *         `toString()` method for the user object.
      */
     public String showUserInfo(String ID) {
-        return users.get(ID).toString();
+        return users.get(ID.toLowerCase()).toString();
     }
 
     /**
@@ -272,8 +272,9 @@ public class Controller {
      */
     public String deleteProduct(String ID) {
         String msg = "We could not find this product";
-        if (findProductByID(ID) != -1) {
-            products.remove(findProductByID(ID));
+        BibliographicProduct product = getProductByID(ID);
+        if (product != null) {
+            products.remove(product);
             for (MyHashMap.Node<String, AbstractUser> entry : users) {
                 entry.getValue().removeProduct(ID);
             }
@@ -569,7 +570,7 @@ public class Controller {
      *         result.
      */
     public String checkOutShoppingCart(String userID) {
-        AbstractUser user = users.get(userID);
+        AbstractUser user = users.get(userID.toLowerCase());
         if (user == null) {
             return "The user does not exist";
         }
@@ -593,7 +594,7 @@ public class Controller {
      *         transaccion was completted.
      */
     public String addProductToUser(String userID, String productID) {
-        AbstractUser user = users.get(userID);
+        AbstractUser user = users.get(userID.toLowerCase());
         BibliographicProduct product = getProductByID(productID);
         String msg = "";
         boolean flagForAmountOfProducts = true;
@@ -655,7 +656,7 @@ public class Controller {
     public String unsubscribeMagazine(String userID, String magazineID) {
         String msg = "Either the user or the magazine ID was not found";
         BibliographicProduct product = getProductByID(magazineID);
-        AbstractUser user = users.get(userID);
+        AbstractUser user = users.get(userID.toLowerCase());
 
         if (product != null && user != null) {
             if (product instanceof Magazine) {
@@ -686,7 +687,7 @@ public class Controller {
      */
     public String productsOfAUser(String userID) {
         String info = "The user does not exist";
-        AbstractUser user = users.get(userID);
+        AbstractUser user = users.get(userID.toLowerCase());
         if (user != null) {
             info = user.productsOfAUser();
         }
@@ -713,7 +714,7 @@ public class Controller {
      */
     public String startAReagindSession(String productID, char option, String userID) {
         String reading = "";
-        AbstractUser user = users.get(userID);
+        AbstractUser user = users.get(userID.toLowerCase());
         BibliographicProduct userProduct = searchProduct(userID, productID);
         int currentPage = 0;
 
@@ -749,7 +750,7 @@ public class Controller {
     }
 
     public String startMatrixReadingSession(String option, String userID) {
-        AbstractUser user = users.get(userID);
+        AbstractUser user = users.get(userID.toLowerCase());
         if (user == null) {
             return "User not found";
         }
@@ -766,12 +767,10 @@ public class Controller {
             case "E":
                 break;
             default:
-                // searchProduct(user, option);
-                break;
         }
 
         readingMatrix += user.getLibrary().showMatrix(currentPage);
-        readingMatrix += "\nINSERT THE Y,X CORDINATE OR THE PRODUC'S CODE TO START A READING SESION" +
+        readingMatrix += "\nINSERT THE Y/X CORDINATE OR THE PRODUC'S CODE TO START A READING SESION" +
                 "\nPress A to go the previous page" +
                 "\nPress S to go to the next page" +
                 "\nPress E to exit";
@@ -780,7 +779,7 @@ public class Controller {
     }
 
     public BibliographicProduct searchProduct(String userID, String word) {
-        AbstractUser user = users.get(userID);
+        AbstractUser user = users.get(userID.toLowerCase());
         if (word.contains("/")) {
             int x = Character.getNumericValue(word.charAt(0));
             int y = Character.getNumericValue(word.charAt(2));
