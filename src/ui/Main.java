@@ -467,28 +467,18 @@ public class Main {
      * until they choose to
      * exit.
      */
-    public void startAReadingSesion() {
-        String userID;
-        String productID;
+    public void startAReadingSesion(String userID, String selection) {
         char option = '.';
-        System.out.println("Please insert the user ID");
-        userID = input.nextLine();
-        System.out.println(driver.productsOfAUser(userID));
-        System.out.println("Please insert the product ID");
-        productID = input.nextLine();
-        if (driver.findProductByID(productID) != -1) {
-            do {
-                try {
-                    System.out.println(driver.startAReagindSession(productID, option, userID));
-                    option = input.nextLine().charAt(0);
-                } catch (StringIndexOutOfBoundsException e) {
-                    System.out.println("Please insert an option");
-                }
+        do {
+            try {
+                System.out.println(driver.startAReagindSession(selection, option, userID));
+                option = input.nextLine().charAt(0);
+            } catch (StringIndexOutOfBoundsException e) {
+                System.out.println("Please insert an option");
+            }
 
-            } while (option != 'B' && option != 'b');
-        } else {
-            System.out.println("Product was not found");
-        }
+        } while (option != 'B' && option != 'b');
+
     }
 
     public void startAReadingMatrix() {
@@ -496,14 +486,25 @@ public class Main {
         String option = "....";
         System.out.println("Please insert the user ID");
         userID = input.nextLine();
-        do {
-            try {
-                System.out.println(driver.startMatrixReadingSession(option, userID));
-                option = input.nextLine();
-            } catch (StringIndexOutOfBoundsException e) {
-                System.out.println("Please insert an option");
-            }
-        } while (option.charAt(0) != 'e' && option.charAt(0) != 'E');
+        if (driver.getUsers().get(userID) != null) {
+            do {
+                try {
+                    System.out.println(driver.startMatrixReadingSession(option, userID));
+                    option = input.nextLine();
+                    if (isTheUserTryingToStartAreadingSession(option, userID)) {
+                        startAReadingSesion(userID, option);
+                    }
+                } catch (StringIndexOutOfBoundsException e) {
+                    System.out.println("Please insert an option");
+                }
+            } while (option.charAt(0) != 'e' && option.charAt(0) != 'E');
+        } else {
+            System.out.println("User not found");
+        }
+    }
+
+    public boolean isTheUserTryingToStartAreadingSession(String option, String userID) {
+        return driver.searchProduct(userID, option) != null;
     }
 
 }

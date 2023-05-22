@@ -593,32 +593,49 @@ public class Controller {
      *         transaccion was completted.
      */
     public String addProductToUser(String userID, String productID) {
-        AbstractUser user = users.get(userID.toLowerCase());
+        AbstractUser user = users.get(userID);
         BibliographicProduct product = getProductByID(productID);
         String msg = "";
+        boolean flagForAmountOfProducts = true;
 
         if (user == null || product == null) {
             return "Either the user or the product ID was not found";
         }
 
-        if (user instanceof Standar) {
-            if (((Standar) user).getLibrary().amountOfBook() >= 5
-                    || ((Standar) user).amountOfBook(user.getCart()) >= 5) {
-                msg = "The user has already 5 books";
-            }
-            if (((Standar) user).getLibrary().amountOfMagazines() >= 2
-                    || ((Standar) user).amountOfMagazines(user.getCart()) >= 2) {
-                msg = "The user is already subscribed to 2 magazines";
-            }
-        }
-
         if (user.hasProduct(productID)) {
-            msg = "This user already has this product";
+            return "This user already has this product";
         }
 
-        product.setCopiesSold(product.getCopiesSold() + 1);
-        msg = user.addProductToCar(product);
+        if (user instanceof Standar) {
+            if (theUserHasMoreThanFiveBooks(user) || theUserHasMoreThanTwoMagazines(user)) {
+                msg = "The user has already 5 books or has more that 2 magazines";
+                flagForAmountOfProducts = false;
+            }
+        }
+        if (flagForAmountOfProducts) {
+            product.setCopiesSold(product.getCopiesSold() + 1);
+            msg = user.addProductToCar(product);
+        }
+
         return msg;
+    }
+
+    private boolean theUserHasMoreThanFiveBooks(AbstractUser user) {
+        boolean answer = false;
+        if (((Standar) user).getLibrary().amountOfBook() >= 5
+                || ((Standar) user).amountOfBook(user.getCart()) >= 5) {
+            answer = true;
+        }
+        return answer;
+    }
+
+    private boolean theUserHasMoreThanTwoMagazines(AbstractUser user) {
+        boolean answer = false;
+        if (((Standar) user).getLibrary().amountOfMagazines() >= 2
+                || ((Standar) user).amountOfMagazines(user.getCart()) >= 2) {
+            answer = true;
+        }
+        return answer;
     }
 
     /**
@@ -697,10 +714,10 @@ public class Controller {
     public String startAReagindSession(String productID, char option, String userID) {
         String reading = "";
         AbstractUser user = users.get(userID);
-        BibliographicProduct userProduct = user.getProductByID(productID);
+        BibliographicProduct userProduct = searchProduct(userID, productID);
         int currentPage = 0;
 
-        if (userProduct != null && user.hasProduct(productID)) {
+        if (userProduct != null) {
             switch (Character.toUpperCase(option)) {
                 case 'A':
                     currentPage = userProduct.previousPage();
@@ -725,7 +742,7 @@ public class Controller {
                     "\nPress 'B' to go back to the library" + "\n\n" +
                     showPublicity(currentPage, user);
         } else {
-            reading = "The user does not have this book";
+            reading = "The user does not have this product";
         }
         return reading;
 
@@ -762,14 +779,14 @@ public class Controller {
         return readingMatrix;
     }
 
-    public BibliographicProduct searchProduct(AbstractUser user, String word) {
-
-        if (word.length() > 2) {
-            return user.getProductByID(word.toLowerCase());
-        } else {
+    public BibliographicProduct searchProduct(String userID, String word) {
+        AbstractUser user = users.get(userID);
+        if (word.contains("/")) {
             int x = Character.getNumericValue(word.charAt(0));
             int y = Character.getNumericValue(word.charAt(2));
             return user.getLibrary().getProductByCordinate(x, y);
+        } else {
+            return user.getProductByID(word.toLowerCase());
         }
     }
 

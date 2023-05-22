@@ -94,7 +94,8 @@ public class Libray implements INavigable {
         for (int i = 0; i < library.size() && !found; i++) {
             for (int j = 0; j < ROWS && !found; j++) {
                 for (int k = 0; k < COLUMNS && !found; k++) {
-                    if (library.get(i)[j][k] != null && library.get(i)[j][k].getID().equals(productID)) {
+                    if (library.get(i)[j][k] != null
+                            && library.get(i)[j][k].getID().toLowerCase().equals(productID.toLowerCase())) {
                         found = true;
                         product = library.get(i)[j][k];
                     }
