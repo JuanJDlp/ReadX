@@ -1,9 +1,11 @@
 package Utils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import model.BibliographicProduct;
 
 public class Utils {
 
@@ -32,5 +34,34 @@ public class Utils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateFormat.parse(dateString));
         return calendar;
+    }
+
+    public static void quickSort(ArrayList<BibliographicProduct> products, int low, int high) {
+        if (low < high) {
+            int pivotIndex = partition(products, low, high);
+            quickSort(products, low, pivotIndex - 1);
+            quickSort(products, pivotIndex + 1, high);
+        }
+    }
+
+    private static int partition(ArrayList<BibliographicProduct> products, int low, int high) {
+        int pivot = products.get(high).getNumberOfPagesRead();
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if (products.get(j).getNumberOfPagesRead() < pivot) {
+                i++;
+                swap(products, i, j);
+            }
+        }
+
+        swap(products, i + 1, high);
+        return i + 1;
+    }
+
+    private static void swap(ArrayList<BibliographicProduct> products, int i, int j) {
+        BibliographicProduct temp = products.get(i);
+        products.set(i, products.get(j));
+        products.set(j, temp);
     }
 }

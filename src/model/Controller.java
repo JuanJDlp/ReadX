@@ -75,7 +75,7 @@ public class Controller {
      */
     public boolean addUser(AbstractUser user) {
         boolean wasAdded = false;
-        if (!users.containsKey(user.getID())) {
+        if (!users.containsKey(user.getID().toLowerCase())) {
             users.put(user.getID().toLowerCase(), user);
             wasAdded = true;
         }
@@ -781,9 +781,13 @@ public class Controller {
     public BibliographicProduct searchProduct(String userID, String word) {
         AbstractUser user = users.get(userID.toLowerCase());
         if (word.contains("/")) {
-            int x = Character.getNumericValue(word.charAt(0));
-            int y = Character.getNumericValue(word.charAt(2));
-            return user.getLibrary().getProductByCordinate(x, y);
+            try {
+                int x = Character.getNumericValue(word.charAt(0));
+                int y = Character.getNumericValue(word.charAt(2));
+                return user.getLibrary().getProductByCordinate(x, y);
+            } catch (IndexOutOfBoundsException e) {
+                return null;
+            }
         } else {
             return user.getProductByID(word.toLowerCase());
         }
@@ -817,6 +821,159 @@ public class Controller {
             add = adds[rand.nextInt((2 - 1) + 1) + 1];
         }
         return add;
+    }
+
+    public String amountOfPagesByProduct() {
+        int bookCounter = 0;
+        int magazineCounter = 0;
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i) instanceof Book) {
+                bookCounter += (products.get(i)).getNumberOfPagesRead();
+            } else if (products.get(i) instanceof Magazine) {
+                magazineCounter += (products.get(i)).getNumberOfPagesRead();
+            }
+        }
+
+        String msg = "Number of pages read by books: " + bookCounter +
+                "\n" + "Number of pages read by magazines: " + magazineCounter;
+        return msg;
+    }
+
+    public String genreAndCategoryWithTheMostAmountOfPagesRead() {
+        return "Genre with the most amount of pages read: " + mostReadGenre() +
+                "\nCategory with the most amount of pages read: " + mostReadCategory();
+    }
+
+    private String mostReadGenre() {
+        int SCIENCE_FICTION = 0,
+                FANTASY = 0,
+                HISTORICAL_NOVEL = 0;
+        for (BibliographicProduct product : products) {
+            if (product instanceof Book) {
+                switch (((Book) product).getGenre()) {
+                    case FANTASY:
+                        FANTASY += ((Book) product).getNumberOfPagesRead();
+                        break;
+                    case HISTORICAL_NOVEL:
+                        HISTORICAL_NOVEL += ((Book) product).getNumberOfPagesRead();
+                        break;
+                    case SCIENCE_FICTION:
+                        SCIENCE_FICTION += ((Book) product).getNumberOfPagesRead();
+                        break;
+                    default:
+
+                }
+            }
+        }
+        int max = Math.max(Math.max(SCIENCE_FICTION, FANTASY), HISTORICAL_NOVEL);
+        return max == SCIENCE_FICTION ? "SCIENCE_FICTION " + max
+                : max == FANTASY ? "FANTASY " + max : "HISTORICAL_NOVEL " + max;
+    }
+
+    private String mostReadCategory() {
+        int VARIETIES = 0,
+                DESIGN = 0,
+                SCIENTIFIC = 0;
+        for (BibliographicProduct product : products) {
+            if (product instanceof Magazine) {
+                switch (((Magazine) product).getCategory()) {
+                    case VARIETIES:
+                        VARIETIES += ((Magazine) product).getNumberOfPagesRead();
+                        break;
+                    case DESIGN:
+                        DESIGN += ((Magazine) product).getNumberOfPagesRead();
+                        break;
+                    case SCIENTIFIC:
+                        SCIENTIFIC += ((Magazine) product).getNumberOfPagesRead();
+                        break;
+                    default:
+
+                }
+            }
+        }
+        int max = Math.max(Math.max(VARIETIES, DESIGN), SCIENTIFIC);
+        return max == VARIETIES ? "VARIETIES " + max : max == DESIGN ? "DESIGN " + max : "SCIENTIFIC " + max;
+    }
+
+    public String top5books() {
+        int counter = 0;
+        Utils.quickSort(products, 0, products.size() - 1);
+        String top5 = "";
+        for (int i = 0; i < products.size() && counter < 5; i++) {
+            if (products.get(i) instanceof Book) {
+                top5 += products.get(i).getName() + " | " + products.get(i).getID() + "\n";
+                counter++;
+            }
+        }
+        return top5;
+    }
+
+    public String top5magazines() {
+        int counter = 0;
+        Utils.quickSort(products, 0, products.size() - 1);
+        String top5 = "";
+        for (int i = 0; i < products.size() && counter < 5; i++) {
+            if (products.get(i) instanceof Magazine) {
+                top5 += products.get(i).getName() + " | " + products.get(i).getID() + "\n";
+                counter++;
+
+            }
+        }
+        return top5;
+    }
+
+    // De cada género, informar el número de libros vendidos y el valor total de
+    // ventas ($).
+    public String salesByGenre() {
+        double SCIFYtotalSellings = 0, FANTASYtotalSelllings = 0, HISOTRYNOVELTotalSellings = 0;
+        int amountSCIFY = 0, amountFANTASY = 0, amountHISOTRYNOVEL = 0;
+        for (BibliographicProduct product : products) {
+            if (product instanceof Book) {
+                switch (((Book) product).getGenre()) {
+                    case FANTASY:
+                        amountFANTASY++;
+                        FANTASYtotalSelllings += product.getValue();
+                        break;
+                    case HISTORICAL_NOVEL:
+                        amountHISOTRYNOVEL++;
+                        HISOTRYNOVELTotalSellings += product.getValue();
+                        break;
+                    case SCIENCE_FICTION:
+                        amountSCIFY++;
+                        SCIFYtotalSellings += product.getValue();
+                        break;
+                }
+            }
+        }
+        return "SCIENCE FICTION  " + amountSCIFY + " | " + SCIFYtotalSellings + "\n" +
+                "FANTASY " + amountFANTASY + " | " + FANTASYtotalSelllings + "\n" +
+                "HISOTRYCAL NOVEL " + amountHISOTRYNOVEL + " | " + HISOTRYNOVELTotalSellings;
+    }
+
+    public String salesByCategory() {
+        double VARIETIEStotalSellings = 0, DESIGNtotalSelllings = 0, SCIENTIFICtotalSellings = 0;
+        int amountVARIETIES = 0, amountDESIGN = 0, amountSCIENTIFIC = 0;
+        for (BibliographicProduct product : products) {
+            if (product instanceof Magazine) {
+                switch (((Magazine) product).getCategory()) {
+                    case VARIETIES:
+                        amountVARIETIES++;
+                        VARIETIEStotalSellings += product.getValue();
+                        break;
+                    case DESIGN:
+                        amountDESIGN++;
+                        DESIGNtotalSelllings += product.getValue();
+                        break;
+                    case SCIENTIFIC:
+                        amountSCIENTIFIC++;
+                        SCIENTIFICtotalSellings += product.getValue();
+                        break;
+                }
+            }
+        }
+        return "VARIETIES " + amountVARIETIES + " | " + VARIETIEStotalSellings + "\n" +
+                "DESIGN " + amountDESIGN + " | " + DESIGNtotalSelllings + "\n" +
+                "SCIENTIFIC " + amountSCIENTIFIC + " | " + SCIENTIFICtotalSellings;
     }
 
 }

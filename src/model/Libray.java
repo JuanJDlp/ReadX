@@ -74,6 +74,7 @@ public class Libray implements INavigable {
                 }
             }
         }
+        sortMat(library.size() - 1);
         return found;
 
     }
@@ -172,16 +173,20 @@ public class Libray implements INavigable {
         // one by one into temp[]
         for (int i = 0; i < ROWS; i++)
             for (int j = 0; j < COLUMNS; j++)
-                temp.add(mat[i][j]);
+                if (mat[i][j] != null) {
+                    temp.add(mat[i][j]);
+                }
 
         // sort temp[]
         Collections.sort(temp);
         // copy the elements of temp[]
         // one by one in mat[][]
         k = 0;
-        for (int i = 0; i < ROWS; i++)
-            for (int j = 0; j < COLUMNS; j++)
-                mat[i][j] = temp.get(k++);
+        for (int i = 0; i < ROWS && !temp.isEmpty(); i++)
+            for (int j = 0; j < COLUMNS && !temp.isEmpty(); j++) {
+                mat[i][j] = temp.get(k);
+                k++;
+            }
     }
 
     public int size() {

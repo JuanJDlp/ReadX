@@ -43,7 +43,7 @@ class UserTests {
         controller.addUser(controller.createUser(name, ID, typeOfUser));
 
         // Assert
-        Assertions.assertTrue(controller.getUsers().containsKey(ID));
+        Assertions.assertTrue(controller.getUsers().containsKey(ID.toLowerCase()));
     }
 
     @Test
@@ -212,7 +212,8 @@ class UserTests {
         book1.setID("7");
         driver.addProduct(book1);
 
-        Assertions.assertEquals("The user has already 5 books", driver.addProductToUser(user.getID(), "7"));
+        Assertions.assertEquals("The user has already 5 books or has more that 2 magazines",
+                driver.addProductToUser(user.getID(), "7"));
         Assertions.assertTrue(user.getLibrary().sizeOfAMatrix(0) == 5);
     }
 
@@ -243,7 +244,7 @@ class UserTests {
                 Category.DESIGN);
         magazine.setID("7");
         driver.addProduct(magazine);
-        Assertions.assertEquals("The user is already subscribed to 2 magazines",
+        Assertions.assertEquals("The user has already 5 books or has more that 2 magazines",
                 driver.addProductToUser(user.getID(), "7"));
         Assertions.assertTrue(user.getLibrary().sizeOfAMatrix(0) == 2);
     }

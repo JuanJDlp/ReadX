@@ -88,7 +88,7 @@ public class Main {
                 }
                 break;
             case 8:
-
+                reportMenu();
                 break;
             default:
                 System.out.println("Option not recognized.");
@@ -119,9 +119,9 @@ public class Main {
                             "5. Purchase product\n" +
                             "6. Unsubscribe from a magazine\n" +
                             "7. Open a user's library\n" +
-                            "8. \n" +
+                            "8. Create a report\n" +
 
-                            "9. EXIT.\n");
+                            "\n9. EXIT.\n");
 
             System.out.print("\n>> ");
             option = validateIntegerInput();
@@ -509,4 +509,64 @@ public class Main {
         return driver.searchProduct(userID, option) != null;
     }
 
+    public void reportMenu() {
+        int option = -1;
+        do {
+            System.out.println("What type of report would you like to create?\n" +
+                    "\n" + "1. Consult total pages read by every type of product" +
+                    "\n" + "2. Genre and Category with the most pages read" +
+                    "\n" + "3. Top 5 books and Top 5 magazines read" +
+                    "\n" + "4. Book with the most amount of sellings per genre" +
+                    "\n" + "5. Inform subscriptions active and total paid per category" +
+                    "\n" + "\n0. Return to main menu");
+            option = validateIntegerInput();
+        } while ((option < 0 || option > 5) && option != 0);
+        executeReport(option);
+    }
+
+    public void executeReport(int option) {
+        switch (option) {
+            case 1:
+                amountOfPagesByProduct();
+                break;
+            case 2:
+                genreAndCategoryWithTheMostAmountOfPagesRead();
+                break;
+            case 3:
+                top5BooksAndTop5MagazinesRead();
+                break;
+            case 4:
+                salesByGenre();
+                break;
+            case 5:
+                salesByCategory();
+                break;
+            case 0:
+                break;
+            default:
+                System.out.println("Option not recognized");
+
+        }
+    }
+
+    public void amountOfPagesByProduct() {
+        System.out.println(driver.amountOfPagesByProduct());
+    }
+
+    public void genreAndCategoryWithTheMostAmountOfPagesRead() {
+        System.out.println(driver.genreAndCategoryWithTheMostAmountOfPagesRead());
+    }
+
+    public void top5BooksAndTop5MagazinesRead() {
+        System.out.println("\tTop 5 books: \n" + driver.top5books() +
+                "\n\tTop 5 magazines: \n" + driver.top5magazines());
+    }
+
+    public void salesByGenre() {
+        System.out.println(driver.salesByGenre());
+    }
+
+    public void salesByCategory() {
+        System.out.println(driver.salesByCategory());
+    }
 }
