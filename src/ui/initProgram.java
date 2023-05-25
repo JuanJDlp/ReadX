@@ -40,7 +40,7 @@ public class initProgram {
      *               the program or system being developed.
      */
     public static void initUsers(Controller driver) {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             driver.addUser(driver.createUser(("A0" + i), ("user#" + i), 1));
         }
         for (int j = 5; j < 10; j++) {

@@ -40,7 +40,7 @@ public class Libray implements INavigable {
             }
         }
 
-        sortMat(library.size() - 1);
+        sortLibrary();
 
     }
 
@@ -61,11 +61,11 @@ public class Libray implements INavigable {
 
     public boolean deleteProduct(String productID) {
         boolean found = false;
-        for (int i = 0; i < library.size() && !found; i++) {
+        for (int i = 0; i < library.size(); i++) {
             for (int j = 0; j < ROWS && !found; j++) {
                 for (int k = 0; k < COLUMNS && !found; k++) {
                     if (library.get(i)[j][k] != null) {
-                        if (library.get(i)[j][k].getID().toLowerCase().equalsIgnoreCase(productID)) {
+                        if (library.get(i)[j][k].getID().equalsIgnoreCase(productID)) {
                             library.get(i)[j][k] = null;
                             found = true;
                         }
@@ -74,7 +74,9 @@ public class Libray implements INavigable {
                 }
             }
         }
-        sortMat(library.size() - 1);
+        if (found) {
+            sortLibrary();
+        }
         return found;
 
     }
@@ -164,29 +166,43 @@ public class Libray implements INavigable {
         return counter;
     }
 
-    public void sortMat(int position) {
+    public void sortLibrary() {
+        for (int i = 0; i < library.size(); i++) {
+            sortMat(i);
+        }
+    }
+
+    private void sortMat(int position) {
         ArrayList<BibliographicProduct> temp = new ArrayList<>();
         BibliographicProduct[][] mat = library.get(position);
-        int k = 0;
+        int rowCount = mat.length;
+        int columnCount = mat[0].length;
+        int nonNullCount = 0;
 
-        // copy the elements of matrix
-        // one by one into temp[]
-        for (int i = 0; i < ROWS; i++)
-            for (int j = 0; j < COLUMNS; j++)
+        // Copy the non-null elements of the matrix into temp[]
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < columnCount; j++) {
                 if (mat[i][j] != null) {
                     temp.add(mat[i][j]);
+                    nonNullCount++;
                 }
-
-        // sort temp[]
-        Collections.sort(temp);
-        // copy the elements of temp[]
-        // one by one in mat[][]
-        k = 0;
-        for (int i = 0; i < ROWS && !temp.isEmpty(); i++)
-            for (int j = 0; j < COLUMNS && !temp.isEmpty(); j++) {
-                mat[i][j] = temp.get(k);
-                k++;
             }
+        }
+
+        // Sort temp[]
+        Collections.sort(temp);
+
+        // Copy the elements of temp[] back into mat[][]
+        int index = 0;
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < columnCount; j++) {
+                if (index < nonNullCount) {
+                    mat[i][j] = temp.get(index++);
+                } else {
+                    mat[i][j] = null; // Set remaining positions to null
+                }
+            }
+        }
     }
 
     public int size() {
