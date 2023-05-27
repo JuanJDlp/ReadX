@@ -717,7 +717,34 @@ public class Controller {
             info = user.productsOfAUser();
         }
         return info;
+    }
 
+    /**
+     * This function returns the magazines of a user if the user exists, otherwise
+     * it returns a message
+     * indicating that the user does not exist.
+     * 
+     * @param userID The userID parameter is a String that represents the unique
+     *               identifier of a user in
+     *               the system. It is used to retrieve information about the
+     *               magazines that a user has subscribed to.
+     * @return The method `magazinesOfAUser` is being called on an `AbstractUser`
+     *         object corresponding to
+     *         the `userID` passed as parameter. If the user exists, the method
+     *         returns a string containing
+     *         information about the magazines subscribed by the user. If the user
+     *         does not exist, the method
+     *         returns the string "The user does not exist". The final returned
+     *         value depends on whether the user
+     *         exists or not
+     */
+    public String magazinesOfAUser(String userID) {
+        String info = "The user does not exist";
+        AbstractUser user = users.get(userID.toLowerCase());
+        if (user != null) {
+            info = user.magazinesOfAUser();
+        }
+        return info;
     }
 
     /**

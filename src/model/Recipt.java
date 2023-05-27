@@ -32,7 +32,7 @@ public class Recipt {
                 "Date of issuance: " + Utils.format(dateOfIssuance.getTime()) + "\n" +
                 "==========================================\n" +
                 this.content +
-                "==========================================";
+                "\n==========================================";
     }
 
     public String toString() {

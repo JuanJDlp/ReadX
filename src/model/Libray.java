@@ -336,6 +336,29 @@ public class Libray implements INavigable {
 
     }
 
+    /**
+     * The function returns a string containing the names and IDs of all magazines
+     * in a library.
+     * 
+     * @return The method `getMagazines` returns a `String` containing information
+     *         about all the magazines
+     *         in the `library` list. The information includes the name and ID of
+     *         each magazine.
+     */
+    public String getMagazines() {
+        String info = "";
+        for (int i = 0; i < library.size(); i++) {
+            for (int j = 0; j < ROWS; j++) {
+                for (int k = 0; k < COLUMNS; k++) {
+                    if (library.get(i)[j][k] instanceof Magazine) {
+                        info += library.get(i)[j][k].getName() + " | " + library.get(i)[j][k].getID() + "\n";
+                    }
+                }
+            }
+        }
+        return info;
+    }
+
     public BibliographicProduct getProductByCordinate(int x, int y) {
         return library.get(currentPage)[x][y];
     }

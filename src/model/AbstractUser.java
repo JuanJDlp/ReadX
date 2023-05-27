@@ -262,6 +262,19 @@ public abstract class AbstractUser {
         return msg;
     }
 
+    /**
+     * This function returns the list of magazines available in a library.
+     * 
+     * @return The method `magazinesOfAUser()` is returning a string that represents
+     *         the magazines of a
+     *         user in the library. The exact content of the string depends on the
+     *         implementation of the
+     *         `getMagazines()` method in the `library` object.
+     */
+    public String magazinesOfAUser() {
+        return library.getMagazines();
+    }
+
     public String toString() {
         return "ID: " + ID + "\nName: " + name + "\nDate of entering: " + Utils.format(dateOfEntering.getTime());
     }

@@ -377,25 +377,36 @@ public class Main {
 
         System.out.println("Please insert the product name");
         productsName = input.nextLine();
+        String similarNames = driver.showProductsWithSimilarName(productsName);
+        if (similarNames != "") {
+            System.out.println(
+                    "\n\tThese are product with similar names: \n" + similarNames);
 
-        System.out.println(
-                "\n\tThese are product with similar names: \n" + driver.showProductsWithSimilarName(productsName));
+            System.out.println("\nPlease insert the ID of the product you want to modify: ");
+            productID = input.nextLine();
 
-        System.out.println("\nPlease insert the ID of the product you want to modify: ");
-        productID = input.nextLine();
-        do {
+            if (productID != "") {
+                do {
 
-            System.out.println("\nWhat would you look to change:  " + driver.showProductLabeledAttributes(productID));
-            option = validateIntegerInput();
-        } while (option < 1 || option > 7);
+                    System.out
+                            .println("\nWhat would you look to change:  "
+                                    + driver.showProductLabeledAttributes(productID));
+                    option = validateIntegerInput();
+                } while (option < 1 || option > 7);
 
-        System.out.println(driver.displayInformationByProduct(productID, option));
+                System.out.println(driver.displayInformationByProduct(productID, option));
 
-        System.out.print("What would you like to change it to: \n>>");
-        newValue = input.nextLine();
+                System.out.print("What would you like to change it to: \n>>");
+                newValue = input.nextLine();
 
-        msg = driver.changeProduct(productID, option, newValue);
-        System.out.println(msg);
+                msg = driver.changeProduct(productID, option, newValue);
+                System.out.println(msg);
+            }
+
+        } else {
+            System.out.println("This product does not exist");
+        }
+
     }
 
     /**
@@ -445,14 +456,11 @@ public class Main {
     public void unsubscribeMagazine() {
         String userID;
         String productID;
-        String productName;
         System.out.println("Please insert the ID of the user");
         userID = input.nextLine();
-        System.out.println("Please insert the product name");
-        productName = input.nextLine();
 
         System.out.println(
-                "\n\tThese are product with similar names: \n" + driver.showProductsWithSimilarName(productName));
+                "\n\tThese are the magazines of the user: \n" + driver.magazinesOfAUser(userID));
 
         System.out.println("\nPlease insert the ID of the magazine you want to unsibscribe from: ");
         productID = input.nextLine();
