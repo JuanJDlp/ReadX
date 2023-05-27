@@ -1,18 +1,20 @@
 package MyHashMap;
 
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 public class MyHashMap<K, V> implements IMyHashMap<K, V>, Iterable<MyHashMap.Node<K, V>> {
 
     private int size;
     private int DEFAULT_SIZE;
-    private Node<K, V>[] table;
+    private LinkedList<Node<K, V>>[] table;
 
     @SuppressWarnings("unchecked")
     public MyHashMap() {
         this.size = 0;
         this.DEFAULT_SIZE = 11;
-        this.table = new Node[DEFAULT_SIZE];
+        this.table = new LinkedList[DEFAULT_SIZE];
     }
 
     /**
@@ -70,32 +72,43 @@ public class MyHashMap<K, V> implements IMyHashMap<K, V>, Iterable<MyHashMap.Nod
      */
     @Override
     public V put(K key, V val) {
-        int index = hashFunction(key);
-        Node<K, V> node = table[index];
-        if (containsKey(key)) { // This should make sure that no Duplicated items can be added making it behave
-                                // as a hash set.
-            return get(key);
+        if (size >= table.length) {
+            resize();
         }
-        if (node == null) {
-            table[index] = new Node<K, V>(key, val);
+
+        int index = hashFunction(key);
+
+        if (table[index] == null) {
+            table[index] = new LinkedList<Node<K, V>>();
+            table[index].add(new Node<K, V>(key, val));
+            size++;
+
         } else {
-            while (node.next != null) {
-                if (node.key.equals(key)) {
-                    node.setValue(val);
+            for (Node<K, V> entry : table[index]) {
+                if (entry.getKey().equals(key)) {
+                    entry.setValue(val);
                     return val;
                 }
-                node = node.next;
             }
-
-            if (node.key.equals(key)) { // Checks the last one
-                node.setValue(val);
-                return val;
-            }
-            node.next = new Node<>(key, val);
-
+            table[index].add(new Node<K, V>(key, val));
+            size++;
         }
-        size++;
         return val;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void resize() {
+        LinkedList<Node<K, V>>[] oldTable = table;
+        table = new LinkedList[size * 2];
+        size = 0;
+
+        for (int i = 0; i < oldTable.length; i++) {
+            if (oldTable[i] != null) {
+                for (Node<K, V> node : oldTable[i]) {
+                    put(node.getKey(), node.getValue());
+                }
+            }
+        }
     }
 
     /**
@@ -130,15 +143,12 @@ public class MyHashMap<K, V> implements IMyHashMap<K, V>, Iterable<MyHashMap.Nod
     @Override
     public V get(K key) {
         int index = hashFunction(key);
-        Node<K, V> node = table[index];
-        if (node == null) {
+        if (table[index] == null) {
             return null;
-        } else {
-            while (node != null) {
-                if (node.key.equals(key)) {
-                    return node.value;
-                }
-                node = node.next;
+        }
+        for (Node<K, V> entry : table[index]) {
+            if (entry.key.equals(key)) {
+                return entry.value;
             }
         }
         return null;
@@ -158,31 +168,31 @@ public class MyHashMap<K, V> implements IMyHashMap<K, V>, Iterable<MyHashMap.Nod
      */
     @Override
     public V remove(K key) {
-        int hash = hashFunction(key);
-        Node<K, V> node = table[hash];
-        V value = null;
-        if (node == null) {
-            value = null;
-        } else if (node.key.equals(key)) {
-            table[hash] = node.next;
-            value = node.value;
-            node = null;
-        } else {
-            Node<K, V> pointer = node;
-            node = node.next;
-            while (node != null) {
-                if (node.key.equals(key)) {
-                    pointer.next = node.next;
-                    value = node.value;
-                    node.next = null;
-                }
-                pointer = node;
-                node = node.next;
-            }
-
+        if (key == null) {
+            return null;
         }
+
+        int index = hashFunction(key);
+        if (table[index] == null) {
+            return null;
+        }
+
+        Node<K, V> toRemove = null;
+
+        for (Node<K, V> entry : table[index]) {
+            if (entry.key.equals(key)) {
+                toRemove = entry;
+                break;
+            }
+        }
+
+        if (toRemove == null) {
+            return null;
+        }
+
+        table[index].remove(toRemove);
         size--;
-        return value;
+        return toRemove.value;
     }
 
     /**
@@ -214,37 +224,51 @@ public class MyHashMap<K, V> implements IMyHashMap<K, V>, Iterable<MyHashMap.Nod
     /**
      * This function returns an iterator that iterates over the nodes in a hash
      * table.
-     * It is used so it is possible to traverse the hastable.
-     * 
+     *
      * @return An iterator over the nodes in the hash table.
      */
     @Override
     public Iterator<Node<K, V>> iterator() {
         return new Iterator<Node<K, V>>() {
             int currentIndex = 0;
-            Node<K, V> currentNode = null;
+            Iterator<Node<K, V>> currentIterator = null;
 
             @Override
             public boolean hasNext() {
-                while (currentIndex < table.length && table[currentIndex] == null) {
+                if (currentIterator != null && currentIterator.hasNext()) {
+                    return true;
+                }
+
+                while (currentIndex < table.length && (table[currentIndex] == null || table[currentIndex].isEmpty())) {
                     currentIndex++;
                 }
+
                 if (currentIndex >= table.length) {
                     return false;
                 }
-                currentNode = table[currentIndex];
-                return true;
+
+                currentIterator = table[currentIndex].iterator();
+                return currentIterator.hasNext();
             }
 
-            @Override
             public Node<K, V> next() {
-                Node<K, V> node = currentNode;
-                if (node.next != null) {
-                    currentNode = node.next;
-                } else {
-                    currentIndex++;
-                    hasNext();
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
                 }
+
+                Node<K, V> node = currentIterator.next();
+
+                if (!currentIterator.hasNext()) {
+                    currentIndex++;
+                    while (currentIndex < table.length
+                            && (table[currentIndex] == null || table[currentIndex].isEmpty())) {
+                        currentIndex++;
+                    }
+                    if (currentIndex < table.length) {
+                        currentIterator = table[currentIndex].iterator();
+                    }
+                }
+
                 return node;
             }
         };
