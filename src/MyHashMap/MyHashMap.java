@@ -96,6 +96,11 @@ public class MyHashMap<K, V> implements IMyHashMap<K, V>, Iterable<MyHashMap.Nod
         return val;
     }
 
+    /**
+     * This function resizes the hash table by creating a new table with double the
+     * size, rehashing all the
+     * elements from the old table, and updating the size variable.
+     */
     @SuppressWarnings("unchecked")
     public void resize() {
         LinkedList<Node<K, V>>[] oldTable = table;
