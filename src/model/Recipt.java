@@ -18,13 +18,21 @@ public class Recipt {
         dateOfIssuance = Calendar.getInstance();
     }
 
+    /**
+     * The getContent() function returns a formatted bill with the date of issuance
+     * and content.
+     * 
+     * @return A string containing a bill with a header, date of issuance, and
+     *         content.
+     */
     public String getContent() {
-        return "==========================================\n" +
+        return "===========================================\n" +
                 "                   BILL                  \n " +
                 "==========================================\n" +
                 "Date of issuance: " + Utils.format(dateOfIssuance.getTime()) + "\n" +
                 "==========================================\n" +
-                this.content;
+                this.content +
+                "==========================================";
     }
 
     public String toString() {

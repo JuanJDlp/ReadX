@@ -481,6 +481,10 @@ public class Main {
 
     }
 
+    /**
+     * This function starts a reading matrix session for a user with a given user
+     * ID.
+     */
     public void startAReadingMatrix() {
         String userID;
         String option = "....";
@@ -505,10 +509,29 @@ public class Main {
         }
     }
 
+    /**
+     * The function checks if the user is trying to start a reading session by
+     * searching for a product with
+     * the given option and userID. And if it finds any it will start a readin
+     * session
+     * 
+     * @param option The option parameter is a String that represents the type of
+     *               reading session the user
+     *               is trying to start. It could be something like "fiction",
+     *               "non-fiction", "mystery", etc.
+     * @param userID The userID parameter is a String that represents the unique
+     *               identifier of a user.
+     * @return A boolean value is being returned.
+     */
+
     public boolean isTheUserTryingToStartAreadingSession(String option, String userID) {
         return driver.searchProduct(userID, option) != null;
     }
 
+    /**
+     * This function displays a menu of report options and executes the selected
+     * report.
+     */
     public void reportMenu() {
         int option = -1;
         do {
@@ -524,6 +547,15 @@ public class Main {
         executeReport(option);
     }
 
+    /**
+     * This function executes a report based on the option selected by calling
+     * different methods.
+     * 
+     * @param option an integer representing the user's choice of report to execute.
+     *               The method uses a
+     *               switch statement to call different report methods based on the
+     *               value of this parameter.
+     */
     public void executeReport(int option) {
         switch (option) {
             case 1:
@@ -549,23 +581,41 @@ public class Main {
         }
     }
 
+    /**
+     * This function prints the amount of pages for a specific product.
+     */
     public void amountOfPagesByProduct() {
         System.out.println(driver.amountOfPagesByProduct());
     }
 
+    /**
+     * This function prints the genre and category with the most amount of pages
+     * read.
+     */
     public void genreAndCategoryWithTheMostAmountOfPagesRead() {
         System.out.println(driver.genreAndCategoryWithTheMostAmountOfPagesRead());
     }
 
+    /**
+     * This function prints the top 5 books and top 5 magazines read using the
+     * "driver" object.
+     */
     public void top5BooksAndTop5MagazinesRead() {
         System.out.println("\tTop 5 books: \n" + driver.top5books() +
                 "\n\tTop 5 magazines: \n" + driver.top5magazines());
     }
 
+    /**
+     * This function prints out the sales by genre using a driver object.
+     */
+
     public void salesByGenre() {
         System.out.println(driver.salesByGenre());
     }
 
+    /**
+     * This function prints the sales by category using a driver object.
+     */
     public void salesByCategory() {
         System.out.println(driver.salesByCategory());
     }

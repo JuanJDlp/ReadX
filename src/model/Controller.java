@@ -621,6 +621,18 @@ public class Controller {
         return msg;
     }
 
+    /**
+     * This function checks if a user has more than five books in their library or
+     * cart.
+     * 
+     * @param user The parameter "user" is an object of type AbstractUser, which is
+     *             a superclass for
+     *             different types of users in a library system. It could be an
+     *             instance of a subclass such as
+     *             Standar, Premium, or Guest.
+     * @return A boolean value indicating whether the user has more than five books
+     *         or not.
+     */
     private boolean theUserHasMoreThanFiveBooks(AbstractUser user) {
         boolean answer = false;
         if (((Standar) user).getLibrary().amountOfBook() >= 5
@@ -630,6 +642,19 @@ public class Controller {
         return answer;
     }
 
+    /**
+     * The function checks if a user has more than two magazines in their library or
+     * cart.
+     * 
+     * @param user The parameter "user" is an object of type AbstractUser, which is
+     *             a superclass for
+     *             different types of users in a library system. The method is
+     *             checking whether this user has more than
+     *             two magazines in their library or cart.
+     * @return A boolean value indicating whether the user has more than two
+     *         magazines in their library or
+     *         cart.
+     */
     private boolean theUserHasMoreThanTwoMagazines(AbstractUser user) {
         boolean answer = false;
         if (((Standar) user).getLibrary().amountOfMagazines() >= 2
@@ -749,6 +774,28 @@ public class Controller {
 
     }
 
+    /**
+     * This function starts a reading session for a user in their library matrix and
+     * allows them to
+     * navigate through the pages.
+     * 
+     * @param option A string representing the user's selected option for the matrix
+     *               reading session. It
+     *               can be "A" to go to the previous page, "S" to go to the next
+     *               page, or "E" to exit the session.
+     * @param userID A string representing the unique identifier of the user who
+     *               wants to start a matrix
+     *               reading session.
+     * @return The method returns a String that represents the reading matrix and
+     *         options for a reading
+     *         session. The reading matrix includes the name of the user's library
+     *         and the current page of the
+     *         library. The options include instructions to insert the Y/X
+     *         coordinate or the product's code to
+     *         start a reading session, and to press A to go to the previous page, S
+     *         to go to the next page, or E
+     *         to exit
+     */
     public String startMatrixReadingSession(String option, String userID) {
         AbstractUser user = users.get(userID.toLowerCase());
         if (user == null) {
@@ -778,6 +825,18 @@ public class Controller {
         return readingMatrix;
     }
 
+    /**
+     * The function searches for a bibliographic product based on a user ID and a
+     * search term, either by ID
+     * or by coordinate.
+     * 
+     * @param userID A string representing the ID of the user who is searching for a
+     *               bibliographic product.
+     * @param word   The search term used to find a bibliographic product. It can
+     *               either be a product ID or a
+     *               coordinate in the user's library.
+     * @return The method `searchProduct` returns a `BibliographicProduct` object.
+     */
     public BibliographicProduct searchProduct(String userID, String word) {
         AbstractUser user = users.get(userID.toLowerCase());
         if (word.contains("/")) {
@@ -823,6 +882,15 @@ public class Controller {
         return add;
     }
 
+    /**
+     * This function calculates the total number of pages read by books and
+     * magazines in a list of
+     * products.
+     * 
+     * @return The method is returning a String message that displays the total
+     *         number of pages read by
+     *         books and magazines in the products list.
+     */
     public String amountOfPagesByProduct() {
         int bookCounter = 0;
         int magazineCounter = 0;
@@ -839,11 +907,30 @@ public class Controller {
         return msg;
     }
 
+    /**
+     * This function returns the genre and category with the most amount of pages
+     * read.
+     * 
+     * @return A string that includes the genre with the most amount of pages read
+     *         and the category with
+     *         the most amount of pages read.
+     */
     public String genreAndCategoryWithTheMostAmountOfPagesRead() {
         return "Genre with the most amount of pages read: " + mostReadGenre() +
                 "\nCategory with the most amount of pages read: " + mostReadCategory();
     }
 
+    /**
+     * The function calculates the most read genre among books in a collection and
+     * returns the genre name
+     * and the number of pages read.
+     * 
+     * @return The method is returning a String that represents the genre that has
+     *         been read the most,
+     *         along with the total number of pages read for that genre. The format
+     *         of the returned String is
+     *         "GENRE TOTAL_PAGES_READ".
+     */
     private String mostReadGenre() {
         int SCIENCE_FICTION = 0,
                 FANTASY = 0,
@@ -870,6 +957,16 @@ public class Controller {
                 : max == FANTASY ? "FANTASY " + max : "HISTORICAL_NOVEL " + max;
     }
 
+    /**
+     * The function calculates and returns the category of magazines with the
+     * highest number of pages read.
+     * 
+     * @return The method is returning a String that represents the category with
+     *         the highest number of
+     *         pages read, along with the number of pages read in that category. The
+     *         format of the String is
+     *         "CATEGORY NUMBER_OF_PAGES_READ".
+     */
     private String mostReadCategory() {
         int VARIETIES = 0,
                 DESIGN = 0,
@@ -895,6 +992,14 @@ public class Controller {
         return max == VARIETIES ? "VARIETIES " + max : max == DESIGN ? "DESIGN " + max : "SCIENTIFIC " + max;
     }
 
+    /**
+     * The function returns the top 5 books from a list of products sorted by name
+     * and ID.
+     * 
+     * @return The method `top5books()` returns a string containing the names and
+     *         IDs of the top 5 books in
+     *         the `products` list.
+     */
     public String top5books() {
         int counter = 0;
         Utils.quickSort(products, 0, products.size() - 1);
@@ -907,6 +1012,15 @@ public class Controller {
         }
         return top5;
     }
+
+    /**
+     * The function returns the top 5 magazines from a list of products sorted by
+     * name and ID.
+     * 
+     * @return The method `top5magazines()` returns a string containing the names
+     *         and IDs of the top 5
+     *         magazines in the `products` list.
+     */
 
     public String top5magazines() {
         int counter = 0;
@@ -922,8 +1036,18 @@ public class Controller {
         return top5;
     }
 
-    // De cada género, informar el número de libros vendidos y el valor total de
-    // ventas ($).
+    /**
+     * The function calculates and returns the total sales and number of books sold
+     * for each genre
+     * (science fiction, fantasy, and historical novel) in a list of bibliographic
+     * products.
+     * 
+     * @return The method `salesByGenre()` returns a string that shows the total
+     *         amount of sales and
+     *         the number of books sold for each genre (Science Fiction, Fantasy,
+     *         and Historical Novel) in the
+     *         `products` list.
+     */
     public String salesByGenre() {
         double SCIFYtotalSellings = 0, FANTASYtotalSelllings = 0, HISOTRYNOVELTotalSellings = 0;
         int amountSCIFY = 0, amountFANTASY = 0, amountHISOTRYNOVEL = 0;
@@ -950,6 +1074,16 @@ public class Controller {
                 "HISOTRYCAL NOVEL " + amountHISOTRYNOVEL + " | " + HISOTRYNOVELTotalSellings;
     }
 
+    /**
+     * The function calculates and returns the total sales and amount of magazines
+     * sold in three different
+     * categories.
+     * 
+     * @return The method `salesByCategory()` returns a string that shows the total
+     *         number of sales and the
+     *         total value of sales for each category of magazines: VARIETIES,
+     *         DESIGN, and SCIENTIFIC.
+     */
     public String salesByCategory() {
         double VARIETIEStotalSellings = 0, DESIGNtotalSelllings = 0, SCIENTIFICtotalSellings = 0;
         int amountVARIETIES = 0, amountDESIGN = 0, amountSCIENTIFIC = 0;

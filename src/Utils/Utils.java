@@ -36,6 +36,17 @@ public class Utils {
         return calendar;
     }
 
+    /**
+     * This is a recursive implementation of the quicksort algorithm that sorts an
+     * ArrayList of
+     * BibliographicProduct objects based on a pivot element.
+     * 
+     * @param products An ArrayList of BibliographicProduct objects that needs to be
+     *                 sorted using the
+     *                 quicksort algorithm.
+     * @param low      The index of the first element in the subarray to be sorted.
+     * @param high     The index of the last element in the subarray being sorted.
+     */
     public static void quickSort(ArrayList<BibliographicProduct> products, int low, int high) {
         if (low < high) {
             int pivotIndex = partition(products, low, high);
@@ -44,6 +55,21 @@ public class Utils {
         }
     }
 
+    /**
+     * This is a Java function that partitions an ArrayList of BibliographicProduct
+     * objects based on their
+     * number of pages read using the quicksort algorithm.
+     * 
+     * @param products an ArrayList of BibliographicProduct objects that needs to be
+     *                 sorted
+     * @param low      The index of the first element in the subarray being
+     *                 partitioned.
+     * @param high     The index of the last element in the subarray being
+     *                 partitioned.
+     * @return The method is returning an integer value which represents the index
+     *         of the pivot element
+     *         after partitioning the ArrayList.
+     */
     private static int partition(ArrayList<BibliographicProduct> products, int low, int high) {
         int pivot = products.get(high).getNumberOfPagesRead();
         int i = low - 1;
@@ -59,6 +85,19 @@ public class Utils {
         return i + 1;
     }
 
+    /**
+     * The function swaps two elements in an ArrayList of BibliographicProduct
+     * objects.
+     * 
+     * @param products An ArrayList of BibliographicProduct objects that contains
+     *                 the products to be
+     *                 swapped.
+     * @param i        The index of the first element to be swapped in the
+     *                 ArrayList.
+     * @param j        The parameter "j" is an integer representing the index of the
+     *                 second element to be swapped
+     *                 in the ArrayList "products".
+     */
     private static void swap(ArrayList<BibliographicProduct> products, int i, int j) {
         BibliographicProduct temp = products.get(i);
         products.set(i, products.get(j));

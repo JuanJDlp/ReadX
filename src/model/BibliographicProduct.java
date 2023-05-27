@@ -121,6 +121,15 @@ public abstract class BibliographicProduct implements Cloneable, INavigable, Com
 
     public abstract String idGenerator();
 
+    /**
+     * This function overrides the clone method of the Object class to create a
+     * clone of a
+     * BibliographicProduct object.
+     * 
+     * @return A cloned instance of the BibliographicProduct class is being
+     *         returned.
+     */
+
     public BibliographicProduct clone() throws CloneNotSupportedException {
         return (BibliographicProduct) super.clone();
     }
@@ -184,6 +193,24 @@ public abstract class BibliographicProduct implements Cloneable, INavigable, Com
                 + Utils.format(publicationDate.getTime()) + "\n4.URL:" + URL + "\n5.Value:" + value;
     }
 
+    /**
+     * This function compares the publication dates of two BibliographicProduct
+     * objects.
+     * 
+     * @param product The parameter "product" is an object of the class
+     *                "BibliographicProduct" which is
+     *                being compared to the current object using the "compareTo"
+     *                method.
+     * @return The method is returning an integer value that represents the
+     *         comparison between the
+     *         publication dates of two BibliographicProduct objects. The value
+     *         returned will be negative if
+     *         the publication date of the current object is earlier than the
+     *         publication date of the compared
+     *         object, zero if they are the same, and positive if the publication
+     *         date of the current object is
+     *         later than the publication date of the compared object.
+     */
     @Override
     public int compareTo(BibliographicProduct product) {
         return this.getPublicationDate().compareTo(product.getPublicationDate());
