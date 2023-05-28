@@ -3,8 +3,8 @@ package model;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import java.util.Random;
+
 import Utils.Utils;
 import Factories.BookFactory;
 import Factories.MagazineFactory;
@@ -794,7 +794,7 @@ public class Controller {
                     "\n\nPress 'A' to go to the prevoius page" +
                     "\nPress 'S' to go to the next page" +
                     "\nPress 'B' to go back to the library" + "\n\n" +
-                    showPublicity(currentPage, user);
+                    showPublicity(currentPage, user, userProduct);
         } else {
             reading = "The user does not have this product";
         }
@@ -898,15 +898,22 @@ public class Controller {
      *         conditions are not met, an empty string
      *         is returned.
      */
-    public String showPublicity(int currentPage, AbstractUser user) {
+    public String showPublicity(int currentPage, AbstractUser user, BibliographicProduct product) {
         Random rand = new Random();
         String[] adds = { "Subscribe to Combo Plus and get Disney+ and Star+ at an incredible price!",
                 "Now your pets have a favorite app: Laika. The best products for your furry.",
                 "We are celebrating our anniversary! Visit your nearest Éxito and be surprised with the best offers." };
         String add = "";
-        if (currentPage % 5 == 0 && (user instanceof Standar)) {
-            add = adds[rand.nextInt((2 - 1) + 1) + 1];
+        if (product instanceof Book) {
+            if (currentPage % 20 == 0 && (user instanceof Standar)) {
+                add = adds[rand.nextInt((2) + 1)];
+            }
+        } else {
+            if (currentPage % 5 == 0 && (user instanceof Standar)) {
+                add = adds[rand.nextInt((2) + 1)];
+            }
         }
+
         return add;
     }
 

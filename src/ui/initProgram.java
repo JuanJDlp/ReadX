@@ -3,6 +3,7 @@ package ui;
 import model.*;
 
 import java.util.Calendar;
+import java.util.Random;
 
 import Factories.*;
 import Interfaces.IAbstractBibliograpgicProductFractory;
@@ -56,17 +57,18 @@ public class initProgram {
      * @param driver The controller object that manages the products.
      */
     public static void initProducts(Controller driver) {
+        Random rand = new Random();
         IAbstractBibliograpgicProductFractory bookFactory = new BookFactory();
         IAbstractBibliograpgicProductFractory magazineFactory = new MagazineFactory();
         for (int i = 0; i < 500; i++) {
             driver.getProducts().add(bookFactory.createProduct("Book#" + i, i, Calendar.getInstance(),
                     "hhtp://www.book# [ " + i + " ].com", i, "book#" + i + " talks about a book!",
-                    (int) Math.random() * (3) + 1));
+                    (rand.nextInt(((3 - 1) + 1) + 1))));
         }
 
         for (int i = 0; i < 500; i++) {
             driver.getProducts().add(magazineFactory.createProduct("Magazine#" + i, i, Calendar.getInstance(),
-                    "hhtp://www.book# [ " + i + " ].com", i, "Muensualy", (int) Math.random() * (3) + 1));
+                    "hhtp://www.book# [ " + i + " ].com", i, "Muensualy", rand.nextInt(((3 - 1) + 1) + 1)));
         }
     }
 
