@@ -780,8 +780,8 @@ public class Controller {
                     currentPage = userProduct.nextPage();
                     break;
                 case 'B':
-                    BibliographicProduct product = products.get(findProductByID(productID));
-                    product.setNumberOfPagesRead(product.getNumberOfPagesRead() + userProduct.getNumberOfPagesRead());
+                    BibliographicProduct product = products.get(findProductByID(userProduct.getID()));
+                    product.setNumberOfPagesRead(userProduct.getNumberOfPagesRead());
                     break;
                 default:
 

@@ -61,12 +61,12 @@ public class initProgram {
         for (int i = 0; i < 500; i++) {
             driver.getProducts().add(bookFactory.createProduct("Book#" + i, i, Calendar.getInstance(),
                     "hhtp://www.book# [ " + i + " ].com", i, "book#" + i + " talks about a book!",
-                    (int) Math.random() * (3 - 1 + 1) + 1));
+                    (int) Math.random() * (3) + 1));
         }
 
         for (int i = 0; i < 500; i++) {
             driver.getProducts().add(magazineFactory.createProduct("Magazine#" + i, i, Calendar.getInstance(),
-                    "hhtp://www.book# [ " + i + " ].com", i, "Muensualy", (int) Math.random() * (3 - 1 + 1) + 1));
+                    "hhtp://www.book# [ " + i + " ].com", i, "Muensualy", (int) Math.random() * (3) + 1));
         }
     }
 
