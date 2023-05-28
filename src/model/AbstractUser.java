@@ -10,7 +10,6 @@ public abstract class AbstractUser {
     protected Calendar dateOfEntering;
     protected Libray library;
     protected ArrayList<Recipt> recipts;
-    protected ArrayList<BibliographicProduct> cart;
 
     public AbstractUser(String ID, String name, Calendar dateOfEntering) {
         this.ID = ID;
@@ -18,7 +17,6 @@ public abstract class AbstractUser {
         this.dateOfEntering = dateOfEntering;
         library = new Libray();
         recipts = new ArrayList<>();
-        cart = new ArrayList<>();
     }
 
     public Calendar getDateOfEntering() {
@@ -54,82 +52,24 @@ public abstract class AbstractUser {
     }
 
     public ArrayList<BibliographicProduct> getCart() {
-        return cart;
+        return library.getCart();
     }
 
     /**
-     * The function adds a bibliographic product to a user's cart and returns a
-     * message indicating whether
-     * the product was successfully added or if it was already in the cart.
+     * This function adds a bibliographic product to a library's shopping cart and
+     * returns a string
+     * indicating success or failure.
      * 
-     * @param product a BibliographicProduct object that represents the product
-     *                being added to the user's
-     *                car. It could be either a Book or a Magazine object.
-     * @return The method is returning a message indicating whether the product was
-     *         successfully added to
-     *         the user's cart or not. The message varies depending on the type of
-     *         product being added. If the
-     *         product is already in the cart, the message will indicate that the
-     *         user has already added it.
+     * @param product The parameter "product" is an object of the class
+     *                "BibliographicProduct". It is being
+     *                passed as an argument to the method "addProductToCar".
+     * @return The method is returning a String value, which is the result of
+     *         calling the `addProductToCar`
+     *         method of the `library` object and passing in the `product`
+     *         parameter.
      */
     public String addProductToCar(BibliographicProduct product) {
-        String msg = "The user alredy added this product to his car";
-        if (!isProductInCar(product.getID())) {
-            try {
-                cart.add(product.clone());
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
-            if (product instanceof Book) {
-                msg = "Product added to user cart";
-            } else if (product instanceof Magazine) {
-                msg = "The magazine was aded to the car.";
-            }
-        }
-
-        return msg;
-    }
-
-    /**
-     * The function adds all products in a shopping cart to a list of products,
-     * creates a receipt object
-     * with the shopping cart items, adds the receipt to a list of receipts, clears
-     * the shopping cart, and
-     * returns the content of the receipt.
-     * 
-     * @return The method is returning the content of the receipt generated for the
-     *         items in the shopping
-     *         cart.
-     */
-    public String checkOutShoppingCart() {
-        library.addAll(cart);
-        Recipt recipt = new Recipt(cart);
-        recipts.add(recipt);
-        cart.clear();
-        return recipt.getContent();
-    }
-
-    /**
-     * This function checks if a product with a given ID is present in the shopping
-     * cart.
-     * 
-     * @param ID The ID parameter is a String representing the unique identifier of
-     *           a bibliographic
-     *           product.
-     * @return The method is returning a boolean value indicating whether a product
-     *         with the given ID is
-     *         present in the "car" list or not.
-     */
-    public boolean isProductInCar(String ID) {
-        boolean found = false;
-        BibliographicProduct product = null;
-        for (int i = 0; i < cart.size() && !found; i++) {
-            if (cart.get(i).getID().toLowerCase().equals(ID.toLowerCase())) {
-                found = true;
-                product = cart.get(i);
-            }
-        }
-        return product != null;
+        return library.addProductToCar(product);
     }
 
     /**
@@ -260,6 +200,21 @@ public abstract class AbstractUser {
             msg = "User " + name + " was subscribed to the magazine!";
         }
         return msg;
+    }
+
+    /**
+     * The function checks out a shopping cart from a library and generates a
+     * receipt for it.
+     * 
+     * @return The method `checkOutShoppingCart()` returns the content of a receipt
+     *         generated from the
+     *         `library.checkOutShoppingCart()` method call.
+     */
+
+    public String checkOutShoppingCart() {
+        Recipt recipt = new Recipt(library.checkOutShoppingCart());
+        recipts.add(recipt);
+        return recipt.getContent();
     }
 
     /**

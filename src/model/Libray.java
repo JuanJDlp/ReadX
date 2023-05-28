@@ -9,10 +9,12 @@ public class Libray implements INavigable {
     private static final int ROWS = 5;
     private static final int COLUMNS = 5;
     private ArrayList<BibliographicProduct[][]> library;
+    private ArrayList<BibliographicProduct> cart;
     private int currentPage;
 
     public Libray() {
         library = new ArrayList<>();
+        cart = new ArrayList<>();
         library.add(createPage());
     }
 
@@ -22,6 +24,10 @@ public class Libray implements INavigable {
 
     public void setCurrentPage(int currentPage) {
         this.currentPage = currentPage;
+    }
+
+    public ArrayList<BibliographicProduct> getCart() {
+        return cart;
     }
 
     /**
@@ -380,4 +386,79 @@ public class Libray implements INavigable {
         }
         return this.currentPage;
     }
+
+    /**
+     * The function adds a bibliographic product to a user's cart and returns a
+     * message indicating whether
+     * the product was successfully added or if it was already in the cart.
+     * 
+     * @param product a BibliographicProduct object that represents the product
+     *                being added to the user's
+     *                car. It could be either a Book or a Magazine object.
+     * @return The method is returning a message indicating whether the product was
+     *         successfully added to
+     *         the user's cart or not. The message varies depending on the type of
+     *         product being added. If the
+     *         product is already in the cart, the message will indicate that the
+     *         user has already added it.
+     */
+    public String addProductToCar(BibliographicProduct product) {
+        String msg = "The user alredy added this product to his car";
+        if (!isProductInCar(product.getID())) {
+            try {
+                cart.add(product.clone());
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+            if (product instanceof Book) {
+                msg = "Product added to user cart";
+            } else if (product instanceof Magazine) {
+                msg = "The magazine was aded to the car.";
+            }
+        }
+
+        return msg;
+    }
+
+    /**
+     * This function checks if a product with a given ID is present in the shopping
+     * cart.
+     * 
+     * @param ID The ID parameter is a String representing the unique identifier of
+     *           a bibliographic
+     *           product.
+     * @return The method is returning a boolean value indicating whether a product
+     *         with the given ID is
+     *         present in the "car" list or not.
+     */
+    public boolean isProductInCar(String ID) {
+        boolean found = false;
+        BibliographicProduct product = null;
+        for (int i = 0; i < cart.size() && !found; i++) {
+            if (cart.get(i).getID().toLowerCase().equals(ID.toLowerCase())) {
+                found = true;
+                product = cart.get(i);
+            }
+        }
+        return product != null;
+    }
+
+    /**
+     * The function adds all products in a shopping cart to a list of products,
+     * creates a receipt object
+     * with the shopping cart items, adds the receipt to a list of receipts, clears
+     * the shopping cart, and
+     * returns the content of the receipt.
+     * 
+     * @return The method is returning the content of the receipt generated for the
+     *         items in the shopping
+     *         cart.
+     */
+    public ArrayList<BibliographicProduct> checkOutShoppingCart() {
+        addAll(cart);
+        ArrayList<BibliographicProduct> tempCart = new ArrayList<>(cart);
+        cart.clear();
+        return tempCart;
+    }
+
 }
