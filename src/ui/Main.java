@@ -486,7 +486,7 @@ public class Main {
             }
 
         } while (option != 'B' && option != 'b');
-
+        driver.startAReagindSession(selection, 'B', userID);
     }
 
     /**
@@ -609,8 +609,7 @@ public class Main {
      * "driver" object.
      */
     public void top5BooksAndTop5MagazinesRead() {
-        System.out.println("\tTop 5 books: \n" + driver.top5books() +
-                "\n\tTop 5 magazines: \n" + driver.top5magazines());
+        System.out.println(driver.top5BooksAndTop5MagazinesRead());
     }
 
     /**

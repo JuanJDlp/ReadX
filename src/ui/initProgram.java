@@ -58,14 +58,15 @@ public class initProgram {
     public static void initProducts(Controller driver) {
         IAbstractBibliograpgicProductFractory bookFactory = new BookFactory();
         IAbstractBibliograpgicProductFractory magazineFactory = new MagazineFactory();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 500; i++) {
             driver.getProducts().add(bookFactory.createProduct("Book#" + i, i, Calendar.getInstance(),
-                    "hhtp://www.book# [ " + i + " ].com", i, "book#" + i + " talks about a book!", 1));
+                    "hhtp://www.book# [ " + i + " ].com", i, "book#" + i + " talks about a book!",
+                    (int) Math.random() * (3 - 1 + 1) + 1));
         }
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 500; i++) {
             driver.getProducts().add(magazineFactory.createProduct("Magazine#" + i, i, Calendar.getInstance(),
-                    "hhtp://www.book# [ " + i + " ].com", i, "Muensualy", 1));
+                    "hhtp://www.book# [ " + i + " ].com", i, "Muensualy", (int) Math.random() * (3 - 1 + 1) + 1));
         }
     }
 

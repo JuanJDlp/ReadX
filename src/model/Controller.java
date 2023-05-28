@@ -3,6 +3,7 @@ package model;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+
 import java.util.Random;
 import Utils.Utils;
 import Factories.BookFactory;
@@ -1020,6 +1021,41 @@ public class Controller {
     }
 
     /**
+     * The function returns a string containing the top 5 books and top 5 magazines
+     * read, sorted by the
+     * number of pages read.
+     * 
+     * @return The method `top5BooksAndTop5MagazinesRead()` is returning a string
+     *         that contains the top 5
+     *         books and top 5 magazines read. The string is constructed by calling
+     *         the `top5books()` and
+     *         `top5magazines()` methods and concatenating the results with some
+     *         additional text.
+     */
+
+    public String top5BooksAndTop5MagazinesRead() {
+        sortBibliographicProductsByPagesRead(products);
+        return "\tTop 5 books: \n" + top5books() +
+                "\n\tTop 5 magazines: \n" + top5magazines();
+    }
+
+    /**
+     * This function sorts an ArrayList of BibliographicProduct objects by the
+     * number of pages read in
+     * each product.
+     * 
+     * @param products an ArrayList of BibliographicProduct objects that need to be
+     *                 sorted based on the
+     *                 number of pages read. The method uses a lambda expression to
+     *                 compare the number of pages read
+     *                 for each product and sort them in ascending order.
+     */
+    public void sortBibliographicProductsByPagesRead(ArrayList<BibliographicProduct> products) {
+        products.sort((product1, product2) -> Integer.compare(product2.getNumberOfPagesRead(),
+                product1.getNumberOfPagesRead()));
+    }
+
+    /**
      * The function returns the top 5 books from a list of products sorted by name
      * and ID.
      * 
@@ -1029,9 +1065,8 @@ public class Controller {
      */
     public String top5books() {
         int counter = 0;
-        Utils.quickSort(products, 0, products.size() - 1);
         String top5 = "";
-        for (int i = 0; i < products.size() && counter < 5; i++) {
+        for (int i = 0; counter < 5; i++) {
             if (products.get(i) instanceof Book) {
                 top5 += products.get(i).getName() + " | " + products.get(i).getID() + "\n";
                 counter++;
@@ -1051,9 +1086,8 @@ public class Controller {
 
     public String top5magazines() {
         int counter = 0;
-        Utils.quickSort(products, 0, products.size() - 1);
         String top5 = "";
-        for (int i = 0; i < products.size() && counter < 5; i++) {
+        for (int i = 0; counter < 5; i++) {
             if (products.get(i) instanceof Magazine) {
                 top5 += products.get(i).getName() + " | " + products.get(i).getID() + "\n";
                 counter++;
@@ -1082,16 +1116,18 @@ public class Controller {
             if (product instanceof Book) {
                 switch (((Book) product).getGenre()) {
                     case FANTASY:
-                        amountFANTASY++;
-                        FANTASYtotalSelllings += product.getValue();
+                        amountFANTASY += product.getCopiesSold();
+                        FANTASYtotalSelllings += product.getValue() * product.getCopiesSold();
                         break;
                     case HISTORICAL_NOVEL:
-                        amountHISOTRYNOVEL++;
-                        HISOTRYNOVELTotalSellings += product.getValue();
+                        amountHISOTRYNOVEL += product.getCopiesSold();
+                        HISOTRYNOVELTotalSellings += product.getValue() * product.getCopiesSold();
+                        ;
                         break;
                     case SCIENCE_FICTION:
-                        amountSCIFY++;
-                        SCIFYtotalSellings += product.getValue();
+                        amountSCIFY += product.getCopiesSold();
+                        SCIFYtotalSellings += product.getValue() * product.getCopiesSold();
+                        ;
                         break;
                 }
             }
@@ -1118,16 +1154,19 @@ public class Controller {
             if (product instanceof Magazine) {
                 switch (((Magazine) product).getCategory()) {
                     case VARIETIES:
-                        amountVARIETIES++;
-                        VARIETIEStotalSellings += product.getValue();
+                        amountVARIETIES += product.getCopiesSold();
+                        VARIETIEStotalSellings += product.getValue() * product.getCopiesSold();
+                        ;
                         break;
                     case DESIGN:
-                        amountDESIGN++;
-                        DESIGNtotalSelllings += product.getValue();
+                        amountDESIGN += product.getCopiesSold();
+                        DESIGNtotalSelllings += product.getValue() * product.getCopiesSold();
+                        ;
                         break;
                     case SCIENTIFIC:
-                        amountSCIENTIFIC++;
-                        SCIENTIFICtotalSellings += product.getValue();
+                        amountSCIENTIFIC += product.getCopiesSold();
+                        SCIENTIFICtotalSellings += product.getValue() * product.getCopiesSold();
+                        ;
                         break;
                 }
             }
